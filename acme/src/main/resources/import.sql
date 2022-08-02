@@ -1,0 +1,1 @@
+insert into event (id, name) values (5, 'Disaster 5');

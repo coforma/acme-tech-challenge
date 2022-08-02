@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    image: acme-img
+    ports:
+      - 8099:8099

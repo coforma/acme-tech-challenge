@@ -32,7 +32,7 @@ class AcmeApplicationTests {
     public void TestRecordsExist() {
         logger.info("Inserting Event {}", eventRepository.save(new Event(101, "Hurricane Calvin")));
         List<Event> events = eventService.list();
-        Assert.assertEquals(events.size(), 3);
+        Assert.assertEquals(events.size(), 4);
     }
 
 }
