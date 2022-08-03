@@ -1,10 +1,14 @@
-package com.acme.event;
+package com.acme.model;
 
 import javax.persistence.*;
+
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 @Entity
-@Table(name = "disaster")
+@Table(name = "Disaster")
 public class Disaster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +17,6 @@ public class Disaster {
     private Date startDate;
     private Date endDate;
     private String name;
-    private Integer incidentTypeId;
-    private Integer declarationTypeId;
+   
 
 }

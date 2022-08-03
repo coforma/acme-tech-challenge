@@ -1,16 +1,18 @@
-package com.acme.event;
+package com.acme.model;
 
 import javax.persistence.*;
 
+import lombok.Data;
+
+@Data
 @Entity
-@Table(name = "facility")
-public class Facility {
+@Table(name = "statecodes")
+public class StateCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    private Integer npi;
+    private String code;
     private String name;
-    private Boolean isOpen;
-    private String stateCode;
+    
 }
