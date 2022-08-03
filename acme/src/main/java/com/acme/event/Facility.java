@@ -12,4 +12,5 @@ public class Facility {
     private Integer npi;
     private String name;
     private Boolean isOpen;
+    private String stateCode;
 }
