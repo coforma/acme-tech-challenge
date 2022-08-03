@@ -23,7 +23,7 @@ public class Event {
         this.id = id;
         this.name = name;
     }
-    
+
     @Override
     public String toString() {
         return String.format("Event [id=%s, name=%s]", id, name);
