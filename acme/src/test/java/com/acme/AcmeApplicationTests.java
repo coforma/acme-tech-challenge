@@ -2,7 +2,6 @@ package com.acme;
 
 import com.acme.event.Event;
 import com.acme.event.EventRepository;
-import com.acme.event.EventService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +20,6 @@ class AcmeApplicationTests {
 
     @Autowired
     EventRepository eventRepository;
-    @Autowired
-    private EventService eventService;
 
     @Test
     void contextLoads() {
@@ -31,7 +28,7 @@ class AcmeApplicationTests {
     @Test
     public void TestRecordsExist() {
         logger.info("Inserting Event {}", eventRepository.save(new Event(101, "Hurricane Calvin")));
-        List<Event> events = eventService.list();
+        List<Event> events = eventRepository.findAll();
         Assert.assertEquals(events.size(), 4);
     }
 

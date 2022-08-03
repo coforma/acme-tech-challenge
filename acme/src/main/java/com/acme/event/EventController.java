@@ -23,17 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/event")
 public class EventController {
-
-    @Autowired
-    private EventService eventService;
+    
     @Autowired
     private EventRepository eventRepository;
-
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/")
     public Collection<Event> findEvents() {
-        return eventService.list();
+        return eventRepository.findAll();
     }
     
     @PreAuthorize("hasRole('USER')")
@@ -66,7 +63,10 @@ public class EventController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEvent(@PathVariable Long id){
-        eventService.deleteEventById(id);
+        
+        Event event = eventRepository.findById(id).orElse(null);
+        eventRepository.delete(event);
+
         return new ResponseEntity("Event deleted: " + id, HttpStatus.OK);
     }
     
