@@ -15,7 +15,7 @@ import com.acme.repository.PatientDisasterStatusRepository;
 
 @RestController
 @RequestMapping("/patientDisasterStatus")
-public class PatientStatusController {
+public class PatientDisasterStatusController {
 
     @Autowired
     private PatientDisasterStatusRepository disasterStatusRepository;

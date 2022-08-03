@@ -15,7 +15,6 @@ public class StateCodeRepositoryTest extends AcmeApplicationTests {
 	@Autowired
 	StateCodeRepository stateCodeRepository;
 
-	@Ignore
 	@Test
 	public void testSave() {
 		StateCode stateCode = new StateCode();
