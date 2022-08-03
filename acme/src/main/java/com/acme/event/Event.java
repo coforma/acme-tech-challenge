@@ -1,10 +1,12 @@
 package com.acme.event;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+@Data
 @Entity
 public class Event {
     @Id
@@ -21,20 +23,7 @@ public class Event {
         this.id = id;
         this.name = name;
     }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    
     @Override
     public String toString() {
         return String.format("Event [id=%s, name=%s]", id, name);

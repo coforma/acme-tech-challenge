@@ -11,7 +11,7 @@
     <groupId>com.acme</groupId>
     <artifactId>acme</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>acme</name>
     <description>acme</description>
     <properties>
