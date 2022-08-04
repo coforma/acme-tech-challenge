@@ -25,6 +25,7 @@ public class Patient {
     @JoinColumn(name = "facilitynpi", referencedColumnName = "id")
     private Facility facility;
     
+    @Column(name = "patientidfromfacility", nullable = false)
     private String patientIdFromFacility;
     
 }
