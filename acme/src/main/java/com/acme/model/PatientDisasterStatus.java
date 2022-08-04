@@ -15,18 +15,18 @@ public class PatientDisasterStatus {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "patientid", referencedColumnName = "id")
     private Patient patient;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "disasterid", referencedColumnName = "id")
     private Disaster disaster;
     
     private Date date;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "statusid", referencedColumnName = "id")
-    private Patient patientStatus;
+    private PatientStatus patientStatus;
 
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acme.AcmeApplicationTests;
 import com.acme.model.Disaster;
+import com.acme.request.model.BatchPatientDisasterStatusInput;
 
 public class DisasterRepositoryTest extends AcmeApplicationTests {
 
@@ -29,6 +30,7 @@ public class DisasterRepositoryTest extends AcmeApplicationTests {
 		//disaster = disasterRepository.save(disaster);
 		Assert.assertNotNull(disaster);
 		Assert.assertNotNull(disaster.getId());
+		
 		
 	}
 
