@@ -14,9 +14,9 @@ public class Disaster {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    @Column(name = "startDate", nullable = false)
     private Date startDate;
     private Date endDate;
+    @Column(name = "name", nullable = false)
     private String name;
-   
-
 }
