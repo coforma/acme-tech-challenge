@@ -69,4 +69,10 @@ values
     ('2022-06-12', 'Arizona Pipeline Fire (FM-5441-AZ)', null),
     ('2022-01-28', 'Rhode Island Severe Winter Storm and Snowstorm (DR-4653-RI)', '2022-01-29')
 
-
+-- Seed Facilities
+insert into facilities
+    (facility_name, is_open, npi, statecode)
+values
+    ('UPMC Northwest', 1, '1003906488', 42),
+    ('Banner University Medical Center', 1, '1417101098', 4),
+    ('University of Alaska Anchorage General Hospital', 0, '1053866467', 2)
