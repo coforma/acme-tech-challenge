@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  acme-server:
+    container_name: acme-server
+    build: .
+    image: acme-server:latest
+    ports:
+      - 18888:8888
+    networks:
+      - spring-cloud-network
+networks:
+  spring-cloud-network:
+    driver: bridge
