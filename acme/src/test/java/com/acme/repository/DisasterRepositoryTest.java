@@ -17,7 +17,7 @@ public class DisasterRepositoryTest extends AcmeApplicationTests {
 	DisasterRepository disasterRepository;
 
 	@Ignore
-	//@Test
+	@Test
 	public void testSave() {
 	  
 		Disaster disaster = new Disaster();
@@ -31,7 +31,8 @@ public class DisasterRepositoryTest extends AcmeApplicationTests {
 		Assert.assertNotNull(disaster.getId());
 		
 	}
-	
+
+	@Ignore
 	@Test
 	public void testGet() {
 		List<Disaster> disasters = disasterRepository.findAll();
@@ -39,8 +40,8 @@ public class DisasterRepositoryTest extends AcmeApplicationTests {
 		Assert.assertFalse("empty", disasters.isEmpty());
 		Assert.assertEquals(100L, disasters.get(0).getId().longValue());
 		Assert.assertEquals("Disaster In making", disasters.get(0).getName());
-		Assert.assertEquals(1659629675000L, disasters.get(0).getEndDate().getTime());
-		Assert.assertEquals(1654359275000L, disasters.get(0).getStartDate().getTime());
+		Assert.assertEquals(1659640475000L, disasters.get(0).getEndDate().getTime());
+		Assert.assertEquals(1654370075000L, disasters.get(0).getStartDate().getTime());
 		
 	}
 }
