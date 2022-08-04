@@ -59,5 +59,14 @@ insert into disaster
     (end_date, name, start_date)
 values
     ('2022-06-11', 'South Dakota Severe Storm, Straight-line Winds, Tornadoes, and Flooding (DR-4664-SD)', '2022-06-14'),
+    ('2022-07-26', 'Kentucky Severe Storms, Flooding, Landslides, and Mudslides (DR-4663-KY)', null),
+    ('2022-05-12', 'Nebraska Severe Storms and Straight-line Winds (DR-4662-NE)', '2022-05-12'),
+    ('2022-05-07', 'Alaska Landslide (DR-4661-AK)', '2022-05-07'),
+    ('2022-07-22', 'California Oak Fire (FM-5445-CA)', null),
+    ('2022-07-18', 'Texas Chalk Mountain Fire (FM-5444-TX)', null),
+    ('2022-04-22', 'North Dakota Severe Winter Storm and Flooding (DR-4660-ND)', '2022-05-25'),
+    ('2022-04-22', 'Minnesota Severe Storms, Straight-line Winds, and Flooding (DR-4659-MN)', '2022-06-15'),
+    ('2022-06-12', 'Arizona Pipeline Fire (FM-5441-AZ)', null),
+    ('2022-01-28', 'Rhode Island Severe Winter Storm and Snowstorm (DR-4653-RI)', '2022-01-29')
 
 
