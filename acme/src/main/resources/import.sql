@@ -1,78 +1,85 @@
--- Seed States
-insert into statecodes
-    (code, name)
-    values
-        (01, 'Alabama' 'AL'),
-        (02, 'Alaska' 'AK'),
-        (04, 'Arizona' 'AZ'),
-        (05, 'Arkansas'	'AR'),
-        (06, 'California' 'CA'),
-        (08, 'Colorado'	'CO'),
-        (09, 'Connecticut' 'CT'),
-        (10, 'Delaware'	'DE'),
-        (11, 'District of Columbia' 'DC'),
-        (12, 'Florida' 'FL'),
-        (13, 'Georgia' 'GA'),
-        (15, 'Hawaii' 'HI'),
-        (16, 'Idaho' 'ID'),
-        (17, 'Illinois'	'IL'),
-        (18, 'Indiana' 'IN'),
-        (19, 'Iowa'	'IA'),
-        (20, 'Kansas' 'KS'),
-        (21, 'Kentucky'	'KY'),
-        (22, 'Louisiana' 'LA'),
-        (23, 'Maine' 'ME'),
-        (24, 'Maryland'	'MD'),
-        (25, 'Massachusetts' 'MA'),
-        (26, 'Michigan'	'MI'),
-        (27, 'Minnesota' 'MN'),
-        (28, 'Mississippi' 'MS'),
-        (29, 'Missouri'	'MO'),
-        (30, 'Montana'	'MT'),
-        (31, 'Nebraska'	'NE'),
-        (32, 'Nevada' 'NV'),
-        (33, 'New Hampshire' 'NH'),
-        (34, 'New Jersey' 'NJ'),
-        (35, 'New Mexico' 'NM'),
-        (36, 'New York' 'NY'),
-        (37, 'North Carolina' 'NC'),
-        (38, 'North Dakota'	'ND'),
-        (39, 'Ohio'	'OH'),
-        (40, 'Oklahoma'	'OK'),
-        (41, 'Oregon' 'OR'),
-        (42, 'Pennsylvania'	'PA'),
-        (44, 'Rhode Island'	'RI'),
-        (45, 'South Carolina' 'SC'),
-        (46, 'South Dakota'	'SD'),
-        (47, 'Tennessee' 'TN'),
-        (48, 'Texas' 'TX'),
-        (49, 'Utah'	'UT'),
-        (50, 'Vermont' 'VT'),
-        (51, 'Virginia'	'VA'),
-        (53, 'Washington' 'WA'),
-        (54, 'West Virginia' 'WV'),
-        (55, 'Wisconsin' 'WI'),
-        (56, 'Wyoming' 'WY')
+insert into StateCode (Id, Code, Name) values ( 10, 'FL', 'Florida') ;
+insert into StateCode (Id, Code, Name) values ( 11, 'GA', 'Georgia') ;
+insert into StateCode (Id, Code, Name) values ( 12, 'AL', 'Alabama') ;
+-- insert into StateCode (Id, Code) values (12, 'HI') ;
+insert into StateCode (Id, Code, Name) values ( 13, 'ID', 'Idaho') ;
+insert into StateCode (Id, Code, Name) values ( 14, 'IL', 'Illinois') ;
+insert into StateCode (Id, Code, Name) values ( 15, 'IN', 'Indiana') ;
+insert into StateCode (Id, Code, Name) values ( 16, 'IA', 'Iowa') ;
+insert into StateCode (Id, Code, Name) values ( 17, 'KS', 'Kansas') ;
+insert into StateCode (Id, Code, Name) values ( 18, 'KY', 'Kentucky') ;
+insert into StateCode (Id, Code, Name) values ( 19, 'LA', 'Louisiana') ;
+insert into StateCode (Id, Code, Name) values ( 20, 'ME', 'Maine') ;
+insert into StateCode (Id, Code, Name) values ( 21, 'MD', 'Maryland') ;
+-- insert into StateCode (Id, Code) values (22, 'AK') ;
+insert into StateCode (Id, Code, Name) values ( 22, 'MA', 'Massachusetts') ;
+insert into StateCode (Id, Code, Name) values ( 23, 'MI', 'Michigan') ;
+insert into StateCode (Id, Code, Name) values ( 24, 'MN', 'Minnesota') ;
+insert into StateCode (Id, Code, Name) values ( 25, 'MS', 'Mississippi') ;
+insert into StateCode (Id, Code, Name) values ( 26, 'MO', 'Missouri') ;
+insert into StateCode (Id, Code, Name) values ( 27, 'MT', 'Montana') ;
+insert into StateCode (Id, Code, Name) values ( 28, 'NE', 'Nebraska') ;
+insert into StateCode (Id, Code, Name) values ( 29, 'NV', 'Nevada') ;
+insert into StateCode (Id, Code, Name) values ( 30, 'NH', 'New Hampshire') ;
+insert into StateCode (Id, Code, Name) values ( 31, 'NJ', 'New Jersey') ;
+insert into StateCode (Id, Code, Name) values ( 32, 'AZ', 'Arizona') ;
+-- insert into StateCode (Id, Code) values (32, 'NM') ;
+insert into StateCode (Id, Code, Name) values ( 33, 'NY', 'New York') ;
+insert into StateCode (Id, Code, Name) values ( 34, 'NC', 'North Carolina') ;
+insert into StateCode (Id, Code, Name) values ( 35, 'ND', 'North Dakota') ;
+insert into StateCode (Id, Code, Name) values ( 36, 'OH', 'Ohio') ;
+insert into StateCode (Id, Code, Name) values ( 37, 'OK', 'Oklahoma') ;
+insert into StateCode (Id, Code, Name) values ( 38, 'OR', 'Oregon') ;
+insert into StateCode (Id, Code, Name) values ( 39, 'PA', 'Pennsylvania') ;
+insert into StateCode (Id, Code, Name) values ( 40, 'PR', 'Puerto Rico') ;
+insert into StateCode (Id, Code, Name) values ( 41, 'RI', 'Rhode Island') ;
+-- insert into StateCode (Id, Code, Name) values ( 42, 'AR', 'Arkansas') ;
+insert into StateCode (Id, Code, Name) values ( 42, 'SC', 'South Carolina') ;
+insert into StateCode (Id, Code, Name) values ( 43, 'SD', 'South Dakota') ;
+insert into StateCode (Id, Code, Name) values ( 44, 'TN', 'Tennessee') ;
+insert into StateCode (Id, Code, Name) values ( 45, 'TX', 'Texas') ;
+insert into StateCode (Id, Code, Name) values ( 46, 'UT', 'Utah') ;
+insert into StateCode (Id, Code, Name) values ( 47, 'VT', 'Vermont') ;
+insert into StateCode (Id, Code, Name) values ( 48, 'VI', 'Virgin Islands') ;
+insert into StateCode (Id, Code, Name) values ( 49, 'VA', 'Virginia') ;
+insert into StateCode (Id, Code, Name) values ( 50, 'WA', 'Washington') ;
+insert into StateCode (Id, Code, Name) values ( 51, 'WV', 'West Virginia') ;
+-- insert into StateCode (Id, Code, Name) values ( 52,'CA','California') ;
+insert into StateCode (Id, Code, Name) values ( 52, 'WI', 'Wisconsin') ;
+insert into StateCode (Id, Code, Name) values ( 53, 'WY', 'Wyoming') ;
+insert into StateCode (Id, Code, Name) values ( 55, 'CA', 'California') ;
+insert into StateCode (Id, Code, Name) values ( 62, 'CO', 'Colorado') ;
+-- insert into StateCode (Id, Code, Name) values ( 67, 'TX', 'Texas') ;
+-- insert into StateCode (Id, Code, Name) values ( 68, 'FL', 'Florida') ;
+insert into StateCode (Id, Code, Name) values ( 72, 'CT', 'Connecticut') ;
+-- insert into StateCode (Id, Code, Name) values ( 74, 'TX', 'Texas') ;
+insert into StateCode (Id, Code, Name) values ( 82, 'DE', 'Delaware') ;
+-- insert into StateCode (Id, Code, Name) values ( 85, 'GA', 'Georgia') ;
+insert into StateCode (Id, Code, Name) values ( 92, 'DC', 'District of Columbia') ;
 
--- Seed Disasters
-insert into disaster
-    (end_date, name, start_date)
-values
-    ('2022-06-11', 'South Dakota Severe Storm, Straight-line Winds, Tornadoes, and Flooding (DR-4664-SD)', '2022-06-14'),
-    ('2022-07-26', 'Kentucky Severe Storms, Flooding, Landslides, and Mudslides (DR-4663-KY)', null),
-    ('2022-05-12', 'Nebraska Severe Storms and Straight-line Winds (DR-4662-NE)', '2022-05-12'),
-    ('2022-05-07', 'Alaska Landslide (DR-4661-AK)', '2022-05-07'),
-    ('2022-07-22', 'California Oak Fire (FM-5445-CA)', null),
-    ('2022-07-18', 'Texas Chalk Mountain Fire (FM-5444-TX)', null),
-    ('2022-04-22', 'North Dakota Severe Winter Storm and Flooding (DR-4660-ND)', '2022-05-25'),
-    ('2022-04-22', 'Minnesota Severe Storms, Straight-line Winds, and Flooding (DR-4659-MN)', '2022-06-15'),
-    ('2022-06-12', 'Arizona Pipeline Fire (FM-5441-AZ)', null),
-    ('2022-01-28', 'Rhode Island Severe Winter Storm and Snowstorm (DR-4653-RI)', '2022-01-29')
+-- manually re-assign an Id for AR, NM, AK, HI
+-- their orignial Id were duplicates, overlapping with other states
+--
+insert into StateCode (Id, Code, Name) values ( 93, 'HI', 'Hawaii') ;
+insert into StateCode (Id, Code, Name) values ( 94, 'AK', 'Alaska') ;
+insert into StateCode (Id, Code, Name) values ( 95, 'NM', 'New Mexico') ;
+insert into StateCode (Id, Code, Name) values ( 96, 'AR', 'Arkansas') ;
 
--- Seed Facilities
-insert into facilities
-    (facility_name, is_open, npi, statecode)
-values
-    ('UPMC Northwest', 1, '1003906488', 42),
-    ('Banner University Medical Center', 1, '1417101098', 4),
-    ('University of Alaska Anchorage General Hospital', 0, '1053866467', 2)
+
+insert into Disaster (Id, StartDate, Name, EndDate) values (1001, '2022-06-11', 'South Dakota Severe Storm, Straight-line Winds, Tornadoes, and Flooding (DR-4664-SD)', '2022-06-14') ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1002, '2022-07-26', 'Kentucky Severe Storms, Flooding, Landslides, and Mudslides (DR-4663-KY)', null) ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1003, '2022-05-12', 'Nebraska Severe Storms and Straight-line Winds (DR-4662-NE)', '2022-05-12') ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1004, '2022-05-07', 'Alaska Landslide (DR-4661-AK)', '2022-05-07') ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1005, '2022-07-22', 'California Oak Fire (FM-5445-CA)',null) ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1006, '2022-07-18', 'Texas Chalk Mountain Fire (FM-5444-TX)', null) ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1007, '2022-04-22', 'North Dakota Severe Winter Storm and Flooding (DR-4660-ND)', '2022-05-25') ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1008, '2022-04-22', 'Minnesota Severe Storms, Straight-line Winds, and Flooding (DR-4659-MN)', '2022-06-15') ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1009, '2022-06-12', 'Arizona Pipeline Fire (FM-5441-AZ)', null) ;
+insert into Disaster (Id, StartDate, Name, EndDate) values (1010, '2022-01-28', 'Rhode Island Severe Winter Storm and Snowstorm (DR-4653-RI)', '2022-01-29') ;
+
+
+insert into Facility (Id, FacilityName, IsOpen, NPI, StateCode) values (1001, 'UPMC Northwest', true, '1003906488', 42) ;
+insert into Facility (Id, FacilityName, IsOpen, NPI, StateCode) values (1002, 'Banner University Medical Center', true, '1417101098', 29) ;
+insert into Facility (Id, FacilityName, IsOpen, NPI, StateCode) values (1003, 'University of Alaska Anchorage General Hospital', false, '1053866467', 94) ;
+
+
