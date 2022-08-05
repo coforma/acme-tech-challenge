@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.acme.model.PatientDisasterStatus;
 import com.acme.repository.PatientDisasterStatusRepository;
-import com.acme.request.model.BatchPatientDisasterStatusInput;
-import com.acme.request.model.BatchPatientDisasterStatusOutput;
 import com.acme.request.model.GetPatientDisasterStatusInput;
 import com.acme.request.model.GetPatientDisasterStatusOutput;
 import com.acme.request.model.PutPatientDisasterStatusInput;
@@ -57,16 +55,6 @@ public class PatientDisasterStatusController {
     	}
     	return response;
     }
-
-
-    
-    @PreAuthorize("hasRole('USER')")
-    @PostMapping("/batch")
-    public BatchPatientDisasterStatusOutput batchUpdateStatus(BatchPatientDisasterStatusInput batchPatientDisasterStatusInput) {
-    	//TODO
-        return null;
-    }
-    
   
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{patientId}/list")
