@@ -8,25 +8,26 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "patientdisaster")
+@Table(name = "PatientDisasterStatus")
 public class PatientDisasterStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "patientid", referencedColumnName = "id")
+    @JoinColumn(name = "patientId", referencedColumnName = "id")
     private Patient patient;
     
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "disasterid", referencedColumnName = "id")
+    @JoinColumn(name = "disasterId", referencedColumnName = "id")
     private Disaster disaster;
-    
+
+    @Column(nullable = false)
     private Date date;
     
     @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "statusid", referencedColumnName = "id")
+    @JoinColumn(name = "statusId", referencedColumnName = "id")
     private PatientStatus patientStatus;
 
 }
