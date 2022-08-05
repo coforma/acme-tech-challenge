@@ -14,18 +14,18 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Patients")
+@Table(name = "Patient")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private Long id;
     
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "facilitynpi", referencedColumnName = "id")
+    @JoinColumn(name = "facilityNpi", referencedColumnName = "npi")
     private Facility facility;
     
-    @Column(name = "patientidfromfacility", nullable = false)
+    @Column(name = "patientIdFromFacility", nullable = false)
     private String patientIdFromFacility;
     
 }

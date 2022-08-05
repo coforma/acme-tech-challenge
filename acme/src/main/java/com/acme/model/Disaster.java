@@ -12,11 +12,12 @@ import java.util.Date;
 public class Disaster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private Long id;
     @Column(name = "startDate", nullable = false)
     private Date startDate;
+    @Column(name="endDate")
     private Date endDate;
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 }
