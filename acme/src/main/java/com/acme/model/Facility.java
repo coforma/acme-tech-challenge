@@ -1,5 +1,7 @@
 package com.acme.model;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 import lombok.Data;
@@ -8,8 +10,12 @@ import org.hibernate.annotations.ColumnDefault;
 @Data
 @Entity
 @Table (name = "Facility")
-public class Facility {
-    @Id
+public class Facility implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4663074549449681578L;
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;

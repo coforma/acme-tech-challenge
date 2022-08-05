@@ -1,5 +1,7 @@
 package com.acme.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +17,13 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "Patient")
-public class Patient {
-    @Id
+public class Patient implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3754080050968439373L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
