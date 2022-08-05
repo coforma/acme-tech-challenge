@@ -82,4 +82,9 @@ insert into Facility (Id, FacilityName, IsOpen, NPI, StateCode) values (1001, 'U
 insert into Facility (Id, FacilityName, IsOpen, NPI, StateCode) values (1002, 'Banner University Medical Center', true, '1417101098', 29) ;
 insert into Facility (Id, FacilityName, IsOpen, NPI, StateCode) values (1003, 'University of Alaska Anchorage General Hospital', false, '1053866467', 94) ;
 
-
+insert into PatientStatus (id, status) values (101, 'unaffected');
+insert into PatientStatus (id, status) values (102, 'injured');
+insert into PatientStatus (id, status) values (103, 'ill in facility');
+insert into PatientStatus (id, status) values (104, 'ill but not in facility');
+insert into PatientStatus (id, status) values (105, 'deceased');
+insert into PatientStatus (id, status) values (106, 'isolated');
