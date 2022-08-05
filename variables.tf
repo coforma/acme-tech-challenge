@@ -1,5 +1,6 @@
 variable "region" { default = "us-east-1" }
 variable "environment" { default = "" }
+variable "image_tag" { default = "" }
 variable "project" { default = "acme-challenge" }
 variable "platform" { default = "ecs" }
 variable "vpc_id" { default = "vpc-05d877f12c50d08e7" }
