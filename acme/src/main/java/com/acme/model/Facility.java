@@ -3,20 +3,24 @@ package com.acme.model;
 import javax.persistence.*;
 
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 @Data
 @Entity
-@Table
+@Table (name = "Facility")
 public class Facility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private Long id;
+    @Column(nullable = false, unique = true)
     private String npi;
+    @Column(name="facilityName")
     private String facilityName;
+    @Column(name = "isOpen", nullable = false)
     private Boolean isOpen;
     
     @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "statecode", referencedColumnName = "id")
+    @JoinColumn(name = "stateCode", referencedColumnName = "id")
     private StateCode stateCode;
 }

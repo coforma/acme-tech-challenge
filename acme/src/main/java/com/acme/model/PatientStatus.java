@@ -5,11 +5,11 @@ import lombok.Data;
 import javax.persistence.*;
 @Data
 @Entity
-@Table(name = "patientstatus")
+@Table(name = "PatientStatus")
 public class PatientStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private Long id;
 
     private String status;
