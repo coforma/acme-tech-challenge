@@ -1,5 +1,8 @@
 package com.acme.repository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +26,8 @@ public class DisasterRepositoryTest extends AcmeApplicationTests {
 		Disaster disaster = new Disaster();
 		disaster.setId(100L);
 		disaster.setName("Disaster In making");
-		disaster.setStartDate(Date.from(java.time.ZonedDateTime.now().minusMonths(2).toInstant()));
-		disaster.setEndDate(Date.from(java.time.ZonedDateTime.now().toInstant()));
+		disaster.setStartDate(LocalDateTime.now().minusMonths(10));
+		disaster.setEndDate(LocalDateTime.now().minusMinutes(2));
 		
 		//disaster = disasterRepository.save(disaster);
 		Assert.assertNotNull(disaster);
@@ -41,8 +44,8 @@ public class DisasterRepositoryTest extends AcmeApplicationTests {
 		Assert.assertFalse("empty", disasters.isEmpty());
 		Assert.assertEquals(100L, disasters.get(0).getId().longValue());
 		Assert.assertEquals("Disaster In making", disasters.get(0).getName());
-		Assert.assertEquals(1659640475000L, disasters.get(0).getEndDate().getTime());
-		Assert.assertEquals(1654370075000L, disasters.get(0).getStartDate().getTime());
+		Assert.assertEquals(1659640475000L, disasters.get(0).getEndDate().atZone(ZoneId.systemDefault()).toEpochSecond());
+		Assert.assertEquals(1654370075000L, disasters.get(0).getStartDate().atZone(ZoneId.systemDefault()).toEpochSecond());
 		
 	}
 }

@@ -1,5 +1,6 @@
 package com.acme.request.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Data;
@@ -16,7 +17,7 @@ import lombok.Data;
 public class GetPatientDisasterStatusOutput {
 
 	/** The date. */
-	private Date date;
+	private LocalDateTime date;
 
 	/** The patient id. */
 	private String patientId;

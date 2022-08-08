@@ -88,3 +88,7 @@ insert into PatientStatus (id, status) values (103, 'ill in facility');
 insert into PatientStatus (id, status) values (104, 'ill but not in facility');
 insert into PatientStatus (id, status) values (105, 'deceased');
 insert into PatientStatus (id, status) values (106, 'isolated');
+
+insert into User (name, password, roles, facilityNpi) values ('userTx', 'abcd1234', 'USER,ADMIN', '1003906488');
+insert into User (name, password, roles, facilityNpi) values ('userDc', 'abcd1234', 'USER,ADMIN', '1417101098');
+insert into User (name, password, roles, facilityNpi) values ('userVa', 'abcd1234', 'USER', '1053866467');
