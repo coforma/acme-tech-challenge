@@ -63,7 +63,7 @@ resource "aws_rds_cluster_instance" "acme-challenge-db-instance" {
 resource "aws_db_subnet_group" "acme-subnet-group" {
   depends_on         = [module.vpc]
   name       = "acme-${var.environment}-subnet-group"
-  subnet_ids = module.vpc.private_subnets #module.vpc.private_subnets_cidr_blocks 
+  subnet_ids = module.vpc.private_subnets
 
   tags = {
     Project     = "${var.project}"
@@ -81,7 +81,7 @@ resource "aws_security_group" "acme-rds-sg" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.public_subnets
   }
 
   egress {
@@ -92,7 +92,10 @@ resource "aws_security_group" "acme-rds-sg" {
   }
 
   tags = {
-    Name = "education_rds"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Team        = "${var.team}"
+    Name        = "${var.project}-${var.environment}-vpc"
   }
 }
 
