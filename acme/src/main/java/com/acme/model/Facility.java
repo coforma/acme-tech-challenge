@@ -26,7 +26,7 @@ public class Facility implements Serializable {
     @Column(name = "isOpen", nullable = false)
     private Boolean isOpen;
     
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne
     @JoinColumn(name = "stateCode", referencedColumnName = "id")
     private StateCode stateCode;
 }

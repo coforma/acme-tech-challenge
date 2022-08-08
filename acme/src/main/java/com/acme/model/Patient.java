@@ -28,7 +28,7 @@ public class Patient implements Serializable{
     @Column(nullable = false)
     private Long id;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "facilityNpi", referencedColumnName = "npi")
     private Facility facility;
     
