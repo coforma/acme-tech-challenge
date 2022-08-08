@@ -2,18 +2,32 @@
 For Phase 3 of the ACME Tech Challenge
 
 ## Installing and configuring AWS environment
+-- Clone this repository
+-- `cd setup/`
+-- `terraform apply -var 'db_password=<REPLACE_ME>'`
+-- Use values from terraform output to create the following Github 'environment > prod' secrets:
+* ECR_REPOSITORY
+* ECR_REGISTRY
+* DATASOURCE_URL
+* DATASOURCE_PASSWORD  (Same as password used above)
+* JWT_HEADER_SECRET
+* S3_TERRAFORM_BUCKET
+* VPC_ID
 
 ## Deployment instructions
 
 ### Compiling (as necessary)
+docker build acme-challenge-api .
 
 ### Deployment
+Deployments are run automatically by Github actions
 
 ## Running tests
 
 ## Uninstall instructions
+-- Comment out main.tf file and merge PR to main branch to remove ecs components
+-- Run `terraform destroy -var 'db_password=<REPLACE_ME>'` from setup folder to remove remaining resources
 
-(From AWS environment.)
 
 ## API verification instructions
 
