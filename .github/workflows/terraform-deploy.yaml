@@ -23,6 +23,9 @@ jobs:
     env:
          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
+         DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD }}
+         JWT_HEADER_SECRET:  ${{ secrets.JWT_HEADER_SECRET }}
          AWS_DEFAULT_REGION: us-east-1
     steps:
       - uses: actions/checkout@v2
