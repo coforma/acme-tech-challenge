@@ -59,7 +59,7 @@ public class AppUserDetailsService implements UserDetailsService {
 	 * @param userRoles the user roles
 	 * @return the list
 	 */
-	private List<GrantedAuthority> buildUserAuthority(String[] userRoles) {
+	protected List<GrantedAuthority> buildUserAuthority(String[] userRoles) {
 
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 

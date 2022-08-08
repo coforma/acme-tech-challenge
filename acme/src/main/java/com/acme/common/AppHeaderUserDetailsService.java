@@ -1,39 +1,58 @@
 package com.acme.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.acme.model.User;
+import com.acme.repository.UserRepository;
 
 import io.jsonwebtoken.Claims;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AppHeaderUserDetailsService.
+ */
+public class AppHeaderUserDetailsService extends AppUserDetailsService {
 
-public class AppHeaderUserDetailsService implements UserDetailsService {
+	/** The logger. */
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    //@Autowired
-    //private UserRepository userRepository;
+	/** The user repository. */
+	@Autowired
+	private UserRepository userRepository;
 
-//	@Autowired
-//	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+	/** The b crypt password encoder. */
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	/** The jwt helper. */
 	@Autowired
 	private JwtHelper jwtHelper;
-	
-    @Override
-    public UserDetails loadUserByUsername(String jwt) {
-    	Claims claims = jwtHelper.decodeJWT(jwt);
-    	String userName  = claims.get("name", String.class);
-    	if(userName == null)
-    		return null;
-    	UserBuilder userBuilder = User.withUsername(userName).password("dummy");
-    	if(userName.equals("admin"))
-    		userBuilder.roles("USER","ADMIN");
-    	else {
-    		userBuilder.roles("USER");
-    		}
-    	return userBuilder.build();
-    	}
-    
-    }
+
+	/**
+	 * Load user by username.
+	 *
+	 * @param jwt the jwt
+	 * @return the user details
+	 */
+	@Override
+	public UserDetails loadUserByUsername(String jwt) {
+
+		Claims claims = jwtHelper.decodeJWT(jwt);
+		String username = claims.get("name", String.class);
+		User user = userRepository.getUserByName(username);
+		if (user == null) {
+			logger.error(" login failed for user {}", username);
+			throw new UsernameNotFoundException(username + "does not exist");
+		}
+		return new AppUser(username, bCryptPasswordEncoder.encode(user.getPassword()),
+				buildUserAuthority(user.getRoles().split(",")), Long.parseLong(user.getFacility().getNpi()));
+
+	}
+}
