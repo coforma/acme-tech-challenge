@@ -1,11 +1,7 @@
 package com.acme.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,23 +9,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.acme.common.AppUser;
-import com.acme.model.Disaster;
-import com.acme.model.Facility;
-import com.acme.model.Patient;
+import com.acme.common.RolesEnum;
 import com.acme.model.PatientDisasterStatus;
-import com.acme.model.PatientStatus;
-import com.acme.repository.DisasterRepository;
-import com.acme.repository.FacilityRepository;
-import com.acme.repository.PatientDisasterStatusRepository;
-import com.acme.repository.PatientRepository;
-import com.acme.repository.PatientStatusRepository;
-import com.acme.request.model.GetPatientDisasterStatusInput;
 import com.acme.request.model.GetPatientDisasterStatusOutput;
 import com.acme.request.model.PutPatientDisasterStatusInput;
 import com.acme.request.model.PutPatientDisasterStatusOutput;
+import com.acme.service.PatientDisasterStatusService;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -39,25 +29,9 @@ import com.acme.request.model.PutPatientDisasterStatusOutput;
 @RequestMapping("/patientStatus/")
 public class PatientDisasterStatusController {
 
-	/** The disaster status repository. */
-	@Autowired
-	private PatientDisasterStatusRepository disasterStatusRepository;
-
-	/** The patient repository. */
-	@Autowired
-	private PatientRepository patientRepository;
-
-	/** The facility repository. */
-	@Autowired
-	private FacilityRepository facilityRepository;
-
-	/** The disaster repository. */
-	@Autowired
-	private DisasterRepository disasterRepository;
 
 	@Autowired
-	private PatientStatusRepository patientStatusRepository;
-
+	PatientDisasterStatusService patientDisasterStatusService;
 	
 	/**
 	 * New patient disaster status.
@@ -65,36 +39,25 @@ public class PatientDisasterStatusController {
 	 * @param putPatientDisasterStatusInput the put patient disaster status input
 	 * @return the put patient disaster status output
 	 */
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('EHR')")
 	@PostMapping("/")
+	@ResponseStatus(HttpStatus.CREATED)
 	public PutPatientDisasterStatusOutput newPatientDisasterStatus(
-			PutPatientDisasterStatusInput putPatientDisasterStatusInput) {
-
-		Disaster disaster = disasterRepository.findById(putPatientDisasterStatusInput.getDisasterId().longValue())
-				.orElse(null);
-		if (disaster == null)
-			return null;
-
-		PatientStatus patientStatus = patientStatusRepository
-				.findById(putPatientDisasterStatusInput.getStatusId().longValue()).orElse(null);
-		if (patientStatus == null)
-			return null;
-		Patient patient = getOrCreatePatient(putPatientDisasterStatusInput);
-		if (patient == null)
-			return null;
-
-		PatientDisasterStatus patientDisasterStatus = new PatientDisasterStatus();
-		patientDisasterStatus.setDate(putPatientDisasterStatusInput.getDate());
-		patientDisasterStatus.setDisaster(disaster);
-		patientDisasterStatus.setPatientStatus(patientStatus);
-		patientDisasterStatus.setPatient(patient);
-
-		patientDisasterStatus = disasterStatusRepository.saveAndFlush(patientDisasterStatus);
-		if (patientDisasterStatus == null || patientDisasterStatus.getId() == null)
-			return null;
-		PutPatientDisasterStatusOutput putPatientDisasterStatusOutput = new PutPatientDisasterStatusOutput();
-		putPatientDisasterStatusOutput.setId(patientDisasterStatus.getId());
-		return putPatientDisasterStatusOutput;
+			PutPatientDisasterStatusInput putPatientDisasterStatusInput, Authentication authentication) {
+		
+		if(putPatientDisasterStatusInput.getFacilityNpi() == null ) 
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FacilityNpi cant be null");
+		if (putPatientDisasterStatusInput.getPatientIdFromFacility() == null )
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid PatientIdFromFacility " + putPatientDisasterStatusInput.getPatientIdFromFacility() );
+		if (putPatientDisasterStatusInput.getDisasterId() == null )
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid DisasterId " + putPatientDisasterStatusInput.getDisasterId() );
+		if (putPatientDisasterStatusInput.getStatusId() == null )
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid PatientStatus" + putPatientDisasterStatusInput.getStatusId() );
+		if (putPatientDisasterStatusInput.getDate() == null )
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Date " + putPatientDisasterStatusInput.getDate() );
+		checkPermissions(putPatientDisasterStatusInput.getFacilityNpi(), authentication);
+		
+		return patientDisasterStatusService.newPatientDisasterStatus(putPatientDisasterStatusInput);
 	}
 
 	
@@ -104,40 +67,15 @@ public class PatientDisasterStatusController {
 	 * @param getPatientDisasterStatusInput the get patient disaster status input
 	 * @return the patient disaster status
 	 */
-	@PreAuthorize("hasRole('USER')")
-	@PostMapping("/get")
-	public GetPatientDisasterStatusOutput getPatientDisasterStatus(
-			GetPatientDisasterStatusInput getPatientDisasterStatusInput, Authentication authentication) {
+	@PreAuthorize("hasAnyRole('EHR','GOVT')")
+	@GetMapping("/get")
+	public GetPatientDisasterStatusOutput getPatientDisasterStatus(@RequestParam(required=true) Long facilityNpi , @RequestParam(required=true) String patientIdFromFacility 
+			, Authentication authentication) {
 		
-		AppUser currentUser = (AppUser)authentication.getPrincipal();
-		Long currentUserNpi = currentUser.getFacilityNpi();
 		
-		if((long)getPatientDisasterStatusInput.getFacilityNpi() != (long)currentUserNpi) {
-			throw new AccessDeniedException("Current User does not have permissions on requested facility npi");
-		}
+		checkPermissions(facilityNpi, authentication);
 	
-		GetPatientDisasterStatusOutput response = null;
-		List<PatientDisasterStatus> returnedStatusList = disasterStatusRepository
-				.findLatestByFacilityAndPatientFacilityId(getPatientDisasterStatusInput.getFacilityNpi().toString(),
-						getPatientDisasterStatusInput.getPatientIdFromFacility(), Pageable.ofSize(1));
-		if (returnedStatusList != null && !returnedStatusList.isEmpty()) {
-			PatientDisasterStatus pds = returnedStatusList.get(0);
-			response = new GetPatientDisasterStatusOutput();
-			response.setDate(pds.getDate());
-			response.setDisasterName(pds.getDisaster().getName());
-			if (pds.getPatient() != null) {
-				if (pds.getPatient().getFacility() != null) {
-					response.setFacilityLocation(pds.getPatient().getFacility().getFacilityName());
-				}
-				if (pds.getPatient().getId() != null) {
-					response.setPatientId(pds.getPatient().getId().toString());
-				}
-			}
-			if (pds.getPatientStatus() != null)
-				response.setPatientStatus(pds.getPatientStatus().getStatus());
-
-		}
-		return response;
+		return patientDisasterStatusService.getPatientStatus(facilityNpi, patientIdFromFacility);
 	}
 
 	/**
@@ -146,7 +84,7 @@ public class PatientDisasterStatusController {
 	 * @param patientId the patient id
 	 * @return the patient disaster status
 	 */
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('EHR','GOVT')")
 	@GetMapping("/{patientId}/list")
 	public PatientDisasterStatus listByPatientId(@PathVariable(value = "patientId") Long patientId) {
 		// TODO
@@ -159,39 +97,31 @@ public class PatientDisasterStatusController {
 	 * @param dateMMYY the date MMYY
 	 * @return the status by id
 	 */
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('EHR','GOVT')")
 	@PostMapping("/{id}")
 	public PatientDisasterStatus getStatusById(@RequestParam(value = "date") String dateMMYY) {
 		// TODO
 		return null;
 	}
 
+	
 	/**
-	 * Gets the or create patient.
+	 * Check permissions.
 	 *
-	 * @param putPatientDisasterStatusInput the put patient disaster status input
-	 * @return the or create patient
+	 * @param facilityNpi the facility npi
+	 * @param authentication the authentication
 	 */
-	public Patient getOrCreatePatient(PutPatientDisasterStatusInput putPatientDisasterStatusInput) {
-		Patient patient = patientRepository.findByFacilityAndPatientFacilityId(
-				putPatientDisasterStatusInput.getFacilityNpi().toString(),
-				putPatientDisasterStatusInput.getPatientIdFromFacility());
-		if (patient != null)
-			return patient;
-		Facility facility = new Facility();
-		facility.setNpi(putPatientDisasterStatusInput.getFacilityNpi().toString());
-		Example<Facility> example = Example.of(facility);
-		List<Facility> flist = facilityRepository.findAll(example);
-		if (flist == null || flist.isEmpty())
-			return null;
-		patient = new Patient();
-		patient.setFacility(flist.get(0));
-		patient.setPatientIdFromFacility(putPatientDisasterStatusInput.getPatientIdFromFacility());
-		patient = patientRepository.saveAndFlush(patient);
-		if(patient == null || patient.getId() == null)
-			return null;
-		return patient;
-
+	private void checkPermissions(Long facilityNpi, Authentication authentication) {
+		if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(RolesEnum.GOVT.name()))) {
+		    return;
+		}
+		AppUser currentUser = (AppUser)authentication.getPrincipal();
+		Long currentUserNpi = currentUser.getFacilityNpi();
+		
+		if((long)facilityNpi!= (long)currentUserNpi) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Current User does not have permissions on requested facility npi");
+		}
 	}
+
 
 }

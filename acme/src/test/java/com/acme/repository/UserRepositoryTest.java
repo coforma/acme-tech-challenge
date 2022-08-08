@@ -14,10 +14,10 @@ public class UserRepositoryTest extends AcmeApplicationTests {
 
 	@Test
 	public void testGet() {
-		User user = userRepository.getUserByName("userTx");
+		User user = userRepository.getUserByName("userEhr");
 		Assert.assertNotNull(user);
 		
-		Assert.assertEquals("userTx", user.getName());
+		Assert.assertEquals("userEhr", user.getName());
 		Assert.assertNotNull(user.getFacility());
 		
 	}
