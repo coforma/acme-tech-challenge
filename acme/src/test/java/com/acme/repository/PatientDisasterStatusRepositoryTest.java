@@ -1,13 +1,11 @@
 package com.acme.repository;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -21,10 +19,12 @@ import com.acme.model.Patient;
 import com.acme.model.PatientDisasterStatus;
 import com.acme.model.PatientStatus;
 
-@Ignore
+
 @TestMethodOrder(OrderAnnotation.class)
 public class PatientDisasterStatusRepositoryTest extends AcmeApplicationTests {
 
+	static Long patientDisasterStatusId = null;
+	
 	@Autowired
 	PatientRepository patientRepository;
 	
@@ -37,17 +37,23 @@ public class PatientDisasterStatusRepositoryTest extends AcmeApplicationTests {
 	@Autowired
 	PatientDisasterStatusRepository patientDisasterStatusRepository;
 
+	@Autowired
+	FacilityRepository facilityRepository;
 	
-	//@Order(1)  
-	//@Ignore
-	//@Test
-	//@Transactional
+	
+	@Order(1)  
+	@Test
 	public void testSave() {
-		//patientDisasterStatusRepository
 		
-		PatientStatus patientStatus = patientStatusRepository.findById(1L).orElse(null);
-		Disaster disaster = disasterRepository.findById(100L).orElse(null);
-		Patient patient = patientRepository.findById(1L).orElse(null);
+		PatientStatus patientStatus = patientStatusRepository.findById(101L).orElse(null);
+		Disaster disaster = disasterRepository.findById(1001L).orElse(null);
+		
+		Patient patient =  new Patient();
+		patient.setPatientIdFromFacility("patient-facility-test-001");
+		patient.setFacility(facilityRepository.findById(1001L).orElseGet(null));
+		patient = patientRepository.save(patient);
+		Assert.assertNotNull(patient);
+		
 		PatientDisasterStatus patientDisasterStatus =  new PatientDisasterStatus();
 		
 		patientDisasterStatus.setDate(LocalDateTime.now());
@@ -60,21 +66,22 @@ public class PatientDisasterStatusRepositoryTest extends AcmeApplicationTests {
 		patientDisasterStatusRepository.flush();
 		Assert.assertNotNull(patientDisasterStatus);
 		Assert.assertNotNull(patientDisasterStatus.getId());
+		Assert.assertNotNull(patientDisasterStatus.getDisaster());
+		Assert.assertNotNull(patientDisasterStatus.getPatient());
+		Assert.assertNotNull(patientDisasterStatus.getPatientStatus());
+		Assert.assertNotNull(patientDisasterStatus.getDate());
 		
+		patientDisasterStatusId = patientDisasterStatus.getId();
 	}
 	
-	
+	@Order(2)
 	@Test
 	public void testGet() {
 		List<PatientDisasterStatus> patientDisasterStatusList = patientDisasterStatusRepository.findAll();
 		Assert.assertNotNull(patientDisasterStatusList);
 		Assert.assertFalse("empty", patientDisasterStatusList.isEmpty());
 		PatientDisasterStatus patientDisasterStatus = patientDisasterStatusList.get(0);
-		Assert.assertEquals(5L, patientDisasterStatus.getId().longValue());
-		Assert.assertEquals(1659639772000L, patientDisasterStatus.getDate().atZone(ZoneId.systemDefault()).toEpochSecond());
-		
-		
-		
+		Assert.assertNotNull(patientDisasterStatus.getId());
 		Assert.assertNotNull("patient null", patientDisasterStatus.getPatient());
 		Assert.assertNotNull("disaster null", patientDisasterStatus.getDisaster());
 		Assert.assertNotNull("patientStatus null", patientDisasterStatus.getPatientStatus());
@@ -82,15 +89,37 @@ public class PatientDisasterStatusRepositoryTest extends AcmeApplicationTests {
 	}
 
 	
+	@Order(3)
 	@Test
 	public void testGetLatestByFacilityIdAndPatientIdInFacility() {
 		List<PatientDisasterStatus> patientDisasterStatusList= 
-				patientDisasterStatusRepository.findLatestByFacilityAndPatientFacilityId("1003906488", "patientidfromfacility-001", Pageable.ofSize(1));
+				patientDisasterStatusRepository.findLatestByFacilityAndPatientFacilityId("1003906488", "patient-facility-test-001", Pageable.ofSize(1));
 		Assert.assertNotNull(patientDisasterStatusList);
 		Assert.assertFalse("empty", patientDisasterStatusList.isEmpty());
 		PatientDisasterStatus patientDisasterStatus = patientDisasterStatusList.get(0);
-		Assert.assertEquals(10L, patientDisasterStatus.getId().longValue());
-		Assert.assertEquals("2022-07-02 00:00:00.0", patientDisasterStatus.getDate().toString());
+		Assert.assertNotNull(patientDisasterStatus.getId());
+		Assert.assertEquals("1003906488", patientDisasterStatus.getPatient().getFacility().getNpi());
+		Assert.assertEquals("UPMC Northwest", patientDisasterStatus.getPatient().getFacility().getFacilityName());
+		Assert.assertEquals(101L, patientDisasterStatus.getPatientStatus().getId().longValue());
+		Assert.assertEquals(1001L, patientDisasterStatus.getDisaster().getId().longValue());
+		Assert.assertTrue(patientDisasterStatus.getDate().isAfter(LocalDateTime.now().minusHours(1)));
+		
+	}
+	
+	@Order(4)
+	@Test
+	public void testDelete() {
+		PatientDisasterStatus patientDisasterStatus = patientDisasterStatusRepository.findById(patientDisasterStatusId).orElse(null);
+		Assert.assertNotNull(patientDisasterStatus);
+		Assert.assertNotNull(patientDisasterStatus.getPatient());
+		patientDisasterStatusRepository.deleteById(patientDisasterStatusId);
+		patientRepository.delete(patientDisasterStatus.getPatient());
+	}
+	
+	@AfterAll
+	@BeforeAll
+	public static void common() {
+		patientDisasterStatusId = null;
 		
 	}
 }

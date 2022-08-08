@@ -23,18 +23,18 @@ public class PatientDisasterStatus implements Serializable {
     @Column(nullable = false)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "patientId", referencedColumnName = "id")
     private Patient patient;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "disasterId", referencedColumnName = "id")
     private Disaster disaster;
 
     @Column(nullable = false)
     private LocalDateTime date;
     
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne
     @JoinColumn(name = "statusId", referencedColumnName = "id")
     private PatientStatus patientStatus;
 
