@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.acme.common.AppUser;
 import com.acme.model.Disaster;
 import com.acme.model.Facility;
 import com.acme.model.Patient;
@@ -27,8 +30,6 @@ import com.acme.request.model.GetPatientDisasterStatusInput;
 import com.acme.request.model.GetPatientDisasterStatusOutput;
 import com.acme.request.model.PutPatientDisasterStatusInput;
 import com.acme.request.model.PutPatientDisasterStatusOutput;
-
-import ch.qos.logback.core.status.Status;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -106,7 +107,15 @@ public class PatientDisasterStatusController {
 	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/get")
 	public GetPatientDisasterStatusOutput getPatientDisasterStatus(
-			GetPatientDisasterStatusInput getPatientDisasterStatusInput) {
+			GetPatientDisasterStatusInput getPatientDisasterStatusInput, Authentication authentication) {
+		
+		AppUser currentUser = (AppUser)authentication.getPrincipal();
+		Long currentUserNpi = currentUser.getFacilityNpi();
+		
+		if((long)getPatientDisasterStatusInput.getFacilityNpi() != (long)currentUserNpi) {
+			throw new AccessDeniedException("Current User does not have permissions on requested facility npi");
+		}
+	
 		GetPatientDisasterStatusOutput response = null;
 		List<PatientDisasterStatus> returnedStatusList = disasterStatusRepository
 				.findLatestByFacilityAndPatientFacilityId(getPatientDisasterStatusInput.getFacilityNpi().toString(),

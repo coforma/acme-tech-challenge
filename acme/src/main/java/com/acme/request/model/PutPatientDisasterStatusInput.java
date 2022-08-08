@@ -1,5 +1,6 @@
 package com.acme.request.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,7 +25,7 @@ public class PutPatientDisasterStatusInput {
 	
 	/** The date. */
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private Date date;
+	private LocalDateTime date;
 	
 	/** The status id. */
 	private Integer statusId;

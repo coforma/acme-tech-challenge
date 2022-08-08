@@ -1,5 +1,7 @@
 package com.acme.repository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +50,7 @@ public class PatientDisasterStatusRepositoryTest extends AcmeApplicationTests {
 		Patient patient = patientRepository.findById(1L).orElse(null);
 		PatientDisasterStatus patientDisasterStatus =  new PatientDisasterStatus();
 		
-		patientDisasterStatus.setDate(Date.from(ZonedDateTime.now().toInstant()));
+		patientDisasterStatus.setDate(LocalDateTime.now());
 		
 		patientDisasterStatus.setDisaster(disaster);
 		patientDisasterStatus.setPatient(patient);
@@ -69,7 +71,7 @@ public class PatientDisasterStatusRepositoryTest extends AcmeApplicationTests {
 		Assert.assertFalse("empty", patientDisasterStatusList.isEmpty());
 		PatientDisasterStatus patientDisasterStatus = patientDisasterStatusList.get(0);
 		Assert.assertEquals(5L, patientDisasterStatus.getId().longValue());
-		Assert.assertEquals(1659639772000L, patientDisasterStatus.getDate().getTime());
+		Assert.assertEquals(1659639772000L, patientDisasterStatus.getDate().atZone(ZoneId.systemDefault()).toEpochSecond());
 		
 		
 		

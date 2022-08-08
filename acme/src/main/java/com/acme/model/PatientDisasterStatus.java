@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -31,7 +32,7 @@ public class PatientDisasterStatus implements Serializable {
     private Disaster disaster;
 
     @Column(nullable = false)
-    private Date date;
+    private LocalDateTime date;
     
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "statusId", referencedColumnName = "id")
