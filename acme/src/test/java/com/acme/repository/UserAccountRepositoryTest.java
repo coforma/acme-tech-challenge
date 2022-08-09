@@ -5,16 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acme.AcmeApplicationTests;
-import com.acme.model.User;
+import com.acme.model.UserAccount;
 
-public class UserRepositoryTest extends AcmeApplicationTests {
+public class UserAccountRepositoryTest extends AcmeApplicationTests {
 
 	@Autowired
-	UserRepository userRepository;
+	UserAccountRepository userAccountRepository;
 
 	@Test
 	public void testGet() {
-		User user = userRepository.getUserByName("userEhr");
+		UserAccount user = userAccountRepository.getUserByName("userEhr");
 		Assert.assertNotNull(user);
 		
 		Assert.assertEquals("userEhr", user.getName());

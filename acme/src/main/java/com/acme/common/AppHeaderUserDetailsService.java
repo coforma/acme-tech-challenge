@@ -3,14 +3,12 @@ package com.acme.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.acme.model.User;
-import com.acme.repository.UserRepository;
+import com.acme.model.UserAccount;
+import com.acme.repository.UserAccountRepository;
 
 import io.jsonwebtoken.Claims;
 
@@ -23,9 +21,10 @@ public class AppHeaderUserDetailsService extends AppUserDetailsService {
 	/** The logger. */
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/** The user repository. */
+	/** The user account repository. */
 	@Autowired
-	private UserRepository userRepository;
+	private UserAccountRepository userAccountRepository; 
+
 
 	/** The b crypt password encoder. */
 	@Autowired
@@ -46,7 +45,7 @@ public class AppHeaderUserDetailsService extends AppUserDetailsService {
 
 		Claims claims = jwtHelper.decodeJWT(jwt);
 		String username = claims.get("name", String.class);
-		User user = userRepository.getUserByName(username);
+		UserAccount user = userAccountRepository.getUserByName(username);
 		if (user == null) {
 			logger.error(" login failed for user {}", username);
 			throw new UsernameNotFoundException(username + "does not exist");
