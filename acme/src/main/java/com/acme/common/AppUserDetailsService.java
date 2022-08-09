@@ -16,8 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.acme.model.User;
-import com.acme.repository.UserRepository;
+import com.acme.model.UserAccount;
+import com.acme.repository.UserAccountRepository;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -32,9 +32,10 @@ public class AppUserDetailsService implements UserDetailsService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	/** The user repository. */
+	
+	/** The user account repository. */
 	@Autowired
-	private UserRepository userRepository; 
+	private UserAccountRepository userAccountRepository; 
 
 	/**
 	 * Load user by username.
@@ -44,7 +45,7 @@ public class AppUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		User user = userRepository.getUserByName(username);
+		UserAccount user = userAccountRepository.getUserByName(username);
 		if(user == null) {
 			logger.error(" login failed for user {}", username);
 			throw new UsernameNotFoundException(username + "does not exist");
