@@ -12,7 +12,7 @@ resource "aws_iam_role" "task" {
         }
       },
       {
-        Action = [ "logs:CreateLogGroup", "logs:logs:CreateLogStream", "logs:PutLogEvents", "logs:DescribeLogStreams"]
+        Action = "logs:CreateLogGroup"
         Effect = "Allow"
         Resource = "arn:aws:logs:*:*:*"
       }
