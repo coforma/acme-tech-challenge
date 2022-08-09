@@ -2,6 +2,9 @@ package com.acme.service;
 
 import java.util.List;
 
+import com.acme.config.GlobalExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
@@ -59,17 +62,18 @@ public class PatientDisasterStatusService {
 	 */
 	public PutPatientDisasterStatusOutput newPatientDisasterStatus(
 			PutPatientDisasterStatusInput putPatientDisasterStatusInput) {
+
 		Disaster disaster = disasterRepository.findById(putPatientDisasterStatusInput.getDisasterId().longValue())
 				.orElse(null);
+		
 		if (disaster == null)
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-					"Given disasterId " + putPatientDisasterStatusInput.getDisasterId() + " is not found in system");
-
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Given disasterId " + putPatientDisasterStatusInput.getDisasterId() + " is not found in system");
+		
 		PatientStatus patientStatus = patientStatusRepository
 				.findById(putPatientDisasterStatusInput.getStatusId().longValue()).orElse(null);
 		if (patientStatus == null)
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-					"Invalid patientstatusId  " + putPatientDisasterStatusInput.getStatusId());
+					"Invalid patient status ID  " + putPatientDisasterStatusInput.getStatusId());
 
 		Patient patient = getOrCreatePatient(putPatientDisasterStatusInput);
 		if (patient == null)
