@@ -45,7 +45,7 @@ public class PatientDisasterStatusControllerTest extends AcmeApplicationTests {
 	PatientDisasterStatusRepository patientDisasterStatusRepository;
 
 	@Order(1)
-	@WithMockUser(username="admin",roles={"USER","ADMIN"})
+	@WithMockUser(username="admin",roles={"GOVT","EHR"})
 	@Test
 	public void testNewPatientDisasterStatus() {
 		PutPatientDisasterStatusInput putPatientDisasterStatusInput = new PutPatientDisasterStatusInput();
@@ -54,27 +54,34 @@ public class PatientDisasterStatusControllerTest extends AcmeApplicationTests {
 		putPatientDisasterStatusInput.setFacilityNpi(1003906488L);
 		putPatientDisasterStatusInput.setPatientIdFromFacility("patientidfromfacility-test-001");
 		putPatientDisasterStatusInput.setStatusId(101);
+		
+	 	List<GrantedAuthority> roles = buildUserAuthority(new String[] { "EHR", "GOVT" });
+    	AppUser appuser = new AppUser("user", "test", roles, 1003906488L);
+    	
+    	UsernamePasswordAuthenticationToken authentication 
+    	= new UsernamePasswordAuthenticationToken(appuser, null, roles);
+    	
 		PutPatientDisasterStatusOutput putPatientDisasterStatusOutput = patientDisasterStatusController
-				.newPatientDisasterStatus(putPatientDisasterStatusInput);
+				.newPatientDisasterStatus(putPatientDisasterStatusInput, authentication);
 		Assert.assertNotNull(putPatientDisasterStatusOutput);
 		Assert.assertNotNull(putPatientDisasterStatusOutput.getId());
 	}
 
 	@Order(2)
-	@WithMockUser(username="admin",roles={"USER","ADMIN"})
+	@WithMockUser(username="admin",roles={"EHR", "GOVT"})
 	@Test
     public void testGetPatientDisasterStatus() {
     	GetPatientDisasterStatusInput getPatientDisasterStatusInput = new GetPatientDisasterStatusInput();
     	getPatientDisasterStatusInput.setFacilityNpi(1003906488L);
     	getPatientDisasterStatusInput.setPatientIdFromFacility("patientidfromfacility-test-001");
     	
-    	List<GrantedAuthority> roles = buildUserAuthority(new String[] { "USER", "ADMIN" });
+    	List<GrantedAuthority> roles = buildUserAuthority(new String[] {"EHR", "GOVT" });
     	AppUser appuser = new AppUser("user", "test", roles, 1003906488L);
     	
     	UsernamePasswordAuthenticationToken authentication 
     	= new UsernamePasswordAuthenticationToken(appuser, null, roles);
     	GetPatientDisasterStatusOutput getPatientDisasterStatusOutput = 
-    			patientDisasterStatusController.getPatientDisasterStatus(getPatientDisasterStatusInput, authentication);
+    			patientDisasterStatusController.getPatientDisasterStatus(1003906488L, "patientidfromfacility-test-001", authentication);
     	Assert.assertNotNull(getPatientDisasterStatusOutput);
 		Assert.assertNotNull(getPatientDisasterStatusOutput.getDisasterName());
     	  
