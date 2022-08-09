@@ -1,10 +1,12 @@
 package com.acme.config;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Contact;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.context.annotation.Configuration;
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @Configuration
 @OpenAPIDefinition(info = @Info(
@@ -12,6 +14,12 @@ import org.springframework.context.annotation.Configuration;
         description = "API Documentation for ACME Technical Challenge - Phase 3",
         version = "1.0.0"
 ))
+@SecurityScheme(
+	    name = "ACME_API_JWT_TOKEN",
+	    type = SecuritySchemeType.APIKEY,
+	    in= SecuritySchemeIn.HEADER
+	    
+	)
 public class OpenApiConfig {
 
 }

@@ -31,23 +31,22 @@ import com.acme.common.AppUserDetailsService;
 public class WebSecurityConfig { 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AppUserDetailsService appUserDetailsService) throws Exception {
-    	AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-    	authenticationManagerBuilder.userDetailsService(appUserDetailsService);
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     	
-    	http.addFilterAfter(siteminderFilter(), RequestHeaderAuthenticationFilter.class)
+    	
+    	http.addFilterAfter(jwtAuthFilter(), RequestHeaderAuthenticationFilter.class)
     	.authorizeHttpRequests((authz) -> authz.antMatchers("/","index.html","/login","/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-    	.anyRequest().authenticated()).formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/swagger-ui/index.html", true).and()
+    	.anyRequest().authenticated())//.formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/swagger-ui/index.html", true).and()
     	.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-    	.and().authenticationManager(authenticationManagerBuilder.build());
-        //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//    	.and().authenticationManager(authenticationManagerBuilder.build());
+        .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.csrf().disable().build();
     }
     
     
   
-	@Bean(name = "siteminderFilter")
-	public RequestHeaderAuthenticationFilter siteminderFilter() throws Exception {
+	@Bean
+	public RequestHeaderAuthenticationFilter jwtAuthFilter() throws Exception {
 		RequestHeaderAuthenticationFilter requestHeaderAuthenticationFilter = new RequestHeaderAuthenticationFilter();
 		requestHeaderAuthenticationFilter.setPrincipalRequestHeader("ACME_API_JWT_TOKEN");
 		requestHeaderAuthenticationFilter.setExceptionIfHeaderMissing(false);
