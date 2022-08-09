@@ -77,33 +77,6 @@ public class PatientDisasterStatusController {
 	
 		return patientDisasterStatusService.getPatientStatus(facilityNpi, patientIdFromFacility);
 	}
-
-	/**
-	 * List by patient id.
-	 *
-	 * @param patientId the patient id
-	 * @return the patient disaster status
-	 */
-	@PreAuthorize("hasAnyRole('EHR','GOVT')")
-	@GetMapping("/{patientId}/list")
-	public PatientDisasterStatus listByPatientId(@PathVariable(value = "patientId") Long patientId) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Gets the status by id.
-	 *
-	 * @param dateMMYY the date MMYY
-	 * @return the status by id
-	 */
-	@PreAuthorize("hasAnyRole('EHR','GOVT')")
-	@PostMapping("/{id}")
-	public PatientDisasterStatus getStatusById(@RequestParam(value = "date") String dateMMYY) {
-		// TODO
-		return null;
-	}
-
 	
 	/**
 	 * Check permissions.
