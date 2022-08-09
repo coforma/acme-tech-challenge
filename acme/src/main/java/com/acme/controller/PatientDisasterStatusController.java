@@ -68,7 +68,7 @@ public class PatientDisasterStatusController {
 	 * @return the patient disaster status
 	 */
 	@PreAuthorize("hasAnyRole('EHR','GOVT')")
-	@GetMapping("/get")
+	@GetMapping("/")
 	public GetPatientDisasterStatusOutput getPatientDisasterStatus(@RequestParam(required=true) Long facilityNpi , @RequestParam(required=true) String patientIdFromFacility 
 			, Authentication authentication) {
 		
