@@ -47,7 +47,7 @@ public class AppUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) {
 		UserAccount user = userAccountRepository.getUserByName(username);
 		if(user == null) {
-			logger.error(" login failed for user {}", username);
+			logger.debug("Login failed for user {}", username);
 			throw new UsernameNotFoundException(username + "does not exist");
 		}
 		return new AppUser(username, bCryptPasswordEncoder.encode(user.getPassword()), buildUserAuthority(user.getRoles().split(",")), Long.parseLong(user.getFacility().getNpi()));
