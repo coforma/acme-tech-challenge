@@ -11,6 +11,11 @@ resource "aws_iam_role" "task" {
           Service = "ecs-tasks.amazonaws.com"
         }
       },
+      {
+        Action = [ "logs:CreateLogGroup", "logs:logs:CreateLogStream", "logs:PutLogEvents", "logs:DescribeLogStreams"]
+        Effect = "Allow"
+        Resource = "arn:aws:logs:*:*:*"
+      }
     ]
   })
   
