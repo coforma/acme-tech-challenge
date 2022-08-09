@@ -22,16 +22,16 @@ resource "aws_iam_role" "task" {
         }
       }
     ]
-  })
-
-  inline_policy {
-    policy = data.aws_iam_policy_document.log_policy.json
-  }
-  
+  }) 
 }
 
 resource "aws_iam_role_policy_attachment" "task" {
   role       = aws_iam_role.task.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "task_logs" {
+  role       = aws_iam_role.task.name
+  policy_arn = aws_iam_policy_document.log_policy.arn
 }
 
