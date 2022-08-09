@@ -61,6 +61,15 @@ resource "aws_ecs_task_definition" "app" {
       name  = "${var.project}-${var.environment}"
       image = "905975536748.dkr.ecr.us-east-1.amazonaws.com/acme-tech-challenge:${var.image_tag}"
       //image = "905975536748.dkr.ecr.us-east-1.amazonaws.com/acme-tech-challenge:5a642f8"
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+            awslogs-group         = "${var.project}-${var.environment}-app-logs",
+            awslogs-region        = "us-east-1",
+            awslogs-stream-prefix = "${var.project}",
+            awslogs-create-group  = "true"
+        }
+      }
       portMappings = [
         {
           containerPort = var.port
