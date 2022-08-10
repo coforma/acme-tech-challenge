@@ -5,6 +5,8 @@ For Phase 3 of the ACME Tech Challenge
 
 The below instructions walk through how to deploy and test this project. The instructions assume that they are being ran on an EC2 instance running the latest amazonlinux 2 AMI, and that the instructions are being ran from within a copy / clone of this git repository on that instance.
 
+We also assume that the amazonlinux2 instance running the below steps has an IAM Role attached to the instance, with a policy matching the policy provided in [infracode/deploy-runner-policy.json](./infracode/deploy-runner-policy.json)
+
 ### Install Necessary Tooling
 
 The below instructions require specific tools (mostly terraform, docker, and the aws cli) already be installed on the box. 
