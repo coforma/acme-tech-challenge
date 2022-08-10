@@ -61,3 +61,16 @@ module "ecs-fargate-service" {
   vpc_private_subnets = module.vpc.private_subnets
 }
 
+module "jumpbox" {
+  source = "./modules/test-jumpbox"
+
+  name_prefix = local.name_prefix
+  vpc_id      = module.vpc.vpc_id
+  subnet_id   = module.vpc.public_subnets[0]
+  tags = {
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Team        = "${var.team}"
+  }
+}
+

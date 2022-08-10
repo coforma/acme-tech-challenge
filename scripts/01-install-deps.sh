@@ -37,3 +37,6 @@ printf "STEP: Install AWS CLI\n"
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip -u awscliv2.zip
 sudo ./aws/install --update 
+
+printf "STEP: Install mysql client\n"
+sudo yum install mysql
