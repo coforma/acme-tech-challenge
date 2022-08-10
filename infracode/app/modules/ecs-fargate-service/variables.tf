@@ -90,9 +90,9 @@ variable "app_definitions" {
 }
 
 variable "app_secrets" {
-  type = list(any)
-  default = []
-  sensitive = true
+  type        = list(any)
+  default     = []
+  sensitive   = true
   description = "List of sensative data to inject into the container definitions"
 }
 

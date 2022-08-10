@@ -17,7 +17,7 @@ resource "aws_iam_role" "task" {
 
 resource "aws_iam_policy" "task_secrets" {
   name_prefix = "${var.project}-${var.environment}-task-secrets-policy"
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [

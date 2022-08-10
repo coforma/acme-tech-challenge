@@ -1,5 +1,5 @@
 locals {
-  name_prefix        = "${var.team}-${var.project}-${var.environment}"
+  name_prefix = "${var.team}-${var.project}-${var.environment}"
 }
 
 module "vpc" {
@@ -36,22 +36,22 @@ module "database" {
 }
 
 module "ecs-fargate-service" {
-  source              = "./modules/ecs-fargate-service"
-  depends_on          = [module.database]
-  vpc_id              = module.vpc.vpc_id
-  environment         = var.environment
-  project             = var.project
-  image_tag           = var.image_tag
-  region              = var.region
-  app_definitions     = {
-      "SPRING_DATASOURCE_URL"      = "jdbc:mysql://${module.database.database_endpoint}:3306/acme?createDatabaseIfNotExist=true",
+  source      = "./modules/ecs-fargate-service"
+  depends_on  = [module.database]
+  vpc_id      = module.vpc.vpc_id
+  environment = var.environment
+  project     = var.project
+  image_tag   = var.image_tag
+  region      = var.region
+  app_definitions = {
+    "SPRING_DATASOURCE_URL" = "jdbc:mysql://${module.database.database_endpoint}:3306/acme?createDatabaseIfNotExist=true",
   }
   app_secrets = [{
-    "name": "SPRING_DATASOURCE_PASSWORD"
-    "valueFrom": aws_ssm_parameter.db_password.arn
-  }, {
-    "name": "JWT_HEADER_SECRET"
-    "valueFrom": aws_ssm_parameter.jwt_header_secret.arn
+    "name" : "SPRING_DATASOURCE_PASSWORD"
+    "valueFrom" : aws_ssm_parameter.db_password.arn
+    }, {
+    "name" : "JWT_HEADER_SECRET"
+    "valueFrom" : aws_ssm_parameter.jwt_header_secret.arn
   }]
   health_check_path   = "/swagger-ui/index.html"
   app_image           = var.app_image

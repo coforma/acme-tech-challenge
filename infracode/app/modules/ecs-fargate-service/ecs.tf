@@ -89,9 +89,9 @@ resource "aws_ecs_task_definition" "app" {
           protocol      = "tcp"
         }
       ]
-      essential = true
+      essential   = true
       environment = local.app_definitions
-      secrets = var.app_secrets
+      secrets     = var.app_secrets
     }
     ]
   )
