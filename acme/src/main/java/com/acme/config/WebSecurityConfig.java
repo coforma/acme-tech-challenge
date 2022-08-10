@@ -33,7 +33,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     	
-    	http.addFilterAfter(siteminderFilter(), RequestHeaderAuthenticationFilter.class)
+    	http.addFilterAfter(jwtAuthFilter(), RequestHeaderAuthenticationFilter.class)
     	.authorizeHttpRequests((authz) -> authz.antMatchers("/","index.html","/login", "/auth/login", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
     	.anyRequest().authenticated()).formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/swagger-ui/index.html", true).and()
     	.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
