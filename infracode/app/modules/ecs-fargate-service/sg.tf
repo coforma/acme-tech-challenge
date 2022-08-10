@@ -31,6 +31,6 @@ resource "aws_security_group" "allow-external" {
     to_port     = "80"
   }
 
-  name   = "${var.project}-${var.environment}_allow-external-ecs"
+  name   = "${var.name_prefix}_allow-external-ecs"
   vpc_id = var.vpc_id
 }

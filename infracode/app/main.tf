@@ -39,6 +39,7 @@ module "ecs-fargate-service" {
   source      = "./modules/ecs-fargate-service"
   depends_on  = [module.database]
   vpc_id      = module.vpc.vpc_id
+  name_prefix = local.name_prefix
   environment = var.environment
   project     = var.project
   image_tag   = var.image_tag

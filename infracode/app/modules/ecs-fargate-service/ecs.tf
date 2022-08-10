@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "cluster" {
-  name = "${var.project}-${var.environment}"
+  name = var.name_prefix
   setting {
     name  = "containerInsights"
     value = "enabled"
@@ -12,7 +12,7 @@ resource "aws_ecs_cluster_capacity_providers" "cluster" {
 }
 
 resource "aws_ecs_service" "service" {
-  name                               = "${var.project}-${var.environment}"
+  name                               = var.name_prefix
   cluster                            = aws_ecs_cluster.cluster.id
   desired_count                      = var.replicas
   wait_for_steady_state              = true
@@ -33,7 +33,7 @@ resource "aws_ecs_service" "service" {
 
 
   load_balancer {
-    container_name   = "${var.project}-${var.environment}"
+    container_name   = var.name_prefix
     container_port   = var.port
     target_group_arn = aws_lb_target_group.app.arn
   }
@@ -52,7 +52,7 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs_service_logs" {
-  name = "${var.project}-${var.environment}-app-logs"
+  name = "${var.name_prefix}-app-logs"
 
   tags = {
     Project     = "${var.project}"
@@ -63,7 +63,7 @@ resource "aws_cloudwatch_log_group" "ecs_service_logs" {
 
 resource "aws_ecs_task_definition" "app" {
   execution_role_arn       = aws_iam_role.task.arn
-  family                   = "${var.project}-${var.environment}"
+  family                   = var.name_prefix
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = aws_iam_role.task.arn
@@ -71,12 +71,12 @@ resource "aws_ecs_task_definition" "app" {
   memory                   = var.memory
   container_definitions = jsonencode([
     {
-      name  = "${var.project}-${var.environment}"
+      name  = "${var.name_prefix}"
       image = "${var.app_image}"
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = "${var.project}-${var.environment}-app-logs",
+          awslogs-group         = "${var.name_prefix}-app-logs",
           awslogs-region        = "us-east-1",
           awslogs-stream-prefix = "${var.project}",
           awslogs-create-group  = "true"

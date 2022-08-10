@@ -117,3 +117,8 @@ variable "platform_version" {
 }
 
 variable "team" { default = "coforma" }
+
+variable "name_prefix" {
+  type        = string
+  description = "Prefix to apply to resources"
+}

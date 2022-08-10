@@ -22,6 +22,7 @@ resource "aws_rds_cluster" "acme-challenge-db" {
 
 resource "aws_rds_cluster_instance" "acme-challenge-db-instance" {
   cluster_identifier = aws_rds_cluster.acme-challenge-db.id
+  identifier         = "${var.name_prefix}-db"
   instance_class     = "db.serverless"
   engine             = "aurora-mysql"
   engine_version     = "8.0"

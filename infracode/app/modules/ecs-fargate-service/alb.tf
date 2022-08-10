@@ -1,5 +1,5 @@
 resource "aws_lb" "lb" {
-  name               = "${var.project}-${var.environment}"
+  name               = "${substr(var.name_prefix, 0, 29)}-lb"
   load_balancer_type = "application"
   internal           = false
   subnets            = var.vpc_public_subnets
@@ -34,7 +34,7 @@ resource "aws_security_group" "allow-external1" {
     to_port     = "80"
   }
 
-  name   = "${var.project}-${var.environment}_allow-external"
+  name   = "${var.name_prefix}_allow-external"
   vpc_id = var.vpc_id
 }
 

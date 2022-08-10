@@ -14,7 +14,7 @@ resource "aws_lb_target_group" "app" {
   }
 
   load_balancing_algorithm_type = "round_robin"
-  name                          = "${var.project}-${var.environment}"
+  name                          = substr(var.name_prefix, 0, 32)
   port                          = var.port
   protocol                      = "HTTP"
   slow_start                    = "120"

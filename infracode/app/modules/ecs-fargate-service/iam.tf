@@ -1,5 +1,5 @@
 resource "aws_iam_role" "task" {
-  name = "${var.project}-${var.environment}-task-role"
+  name = "${var.name_prefix}-task-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -16,7 +16,7 @@ resource "aws_iam_role" "task" {
 }
 
 resource "aws_iam_policy" "task_secrets" {
-  name_prefix = "${var.project}-${var.environment}-task-secrets-policy"
+  name_prefix = "${var.name_prefix}-task-secrets-policy"
   policy      = <<EOF
 {
   "Version": "2012-10-17",
