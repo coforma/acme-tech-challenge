@@ -28,6 +28,7 @@ printf "STEP: Install docker\n"
 # Install Docker
 sudo amazon-linux-extras install docker -y
 sudo usermod -a -G docker ec2-user
+sudo service docker start
 id ec2-user
 printf "\n\n"
 
