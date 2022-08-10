@@ -1,33 +1,74 @@
 # acme-tech-challenge
 For Phase 3 of the ACME Tech Challenge
 
-## Installing and configuring AWS environment
--- Clone this repository
--- `cd setup/`
--- `terraform apply -var 'db_password=<REPLACE_ME>'`
--- Use values from terraform output to create the following Github 'environment > prod' secrets:
-* ECR_REPOSITORY
-* ECR_REGISTRY
-* DATASOURCE_URL
-* DATASOURCE_PASSWORD  (Same as password used above)
-* JWT_HEADER_SECRET
-* S3_TERRAFORM_BUCKET
-* VPC_ID
-
 ## Deployment instructions
 
-### Compiling (as necessary)
-docker build acme-challenge-api .
+The below instructions walk through how to deploy and test this project. The instructions assume that they are being ran on an EC2 instance running the latest amazonlinux 2 AMI, and that the instructions are being ran from within a copy / clone of this git repository on that instance.
 
-### Deployment
-Deployments are run automatically by Github actions
+We also assume that the amazonlinux2 instance running the below steps has an IAM Role attached to the instance, with a policy matching the policy provided in [infracode/deploy-runner-policy.json](./infracode/deploy-runner-policy.json)
 
-## Running tests
+### Install Necessary Tooling
 
-## Uninstall instructions
--- Comment out main.tf file and merge PR to main branch to remove ecs components
--- Run `terraform destroy -var 'db_password=<REPLACE_ME>'` from setup folder to remove remaining resources
+The below instructions require specific tools (mostly terraform, docker, and the aws cli) already be installed on the box. 
 
+To ensure they are installed, please run as a one time action
+
+```shell
+./scripts/01-install-deps.sh
+```
+
+### Bootstrap Terraform / AWS Environment
+
+Additionally, some initial AWS environment bootstrapping is required to ensure that an appropriate ECR repository (for docker) and S3 bucket (for terraform) are available for the build and deploy code to use.
+
+As a one-time action, please run
+
+```shell
+./scripts/02-bootstrap.sh
+```
+
+### Build and Deploy
+
+The build and deployment infrastructure is designed to be able to deploy multiple copies within the same AWS account. To distinguish between copies, we use a notion of environments.
+
+To build and deploy the solution with an environment of `submission`, please run
+
+```shell
+./scripts/03-deploy.sh --environment submission
+```
+
+Additional environment copies can be deployed as desired by varying the value after the `--environment` option.
+
+### Test and Verify
+
+TODO
+
+```shell
+./scripts/04-test.sh --environment submission
+```
+
+changing `submission` to the environment you wish to test
+
+### Tear Down Environment
+
+When down, each environment can be torn down by running the following,
+
+```shell
+./scripts/05-teardown-app.sh --environment submission
+```
+
+changing `submission` to the environment you wish to tear down
+
+### Tear Down Bootstrap
+
+When done with the entire solution, the terraform and ecr bootstrap can be torn down with
+
+```shell
+./scripts/99-teardown-bootstrap.sh
+```
+
+This should only be ran after tearing down each environment per above.
+When prompted and you are sure you want to remove the bootstrap code, enter `yes`.
 
 ## API verification instructions
 

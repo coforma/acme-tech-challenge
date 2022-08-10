@@ -23,7 +23,7 @@ resource "aws_security_group" "allow-external" {
     self        = "false"
     to_port     = "8080"
   }
-   ingress {
+  ingress {
     cidr_blocks = ["0.0.0.0/0"]
     from_port   = "80"
     protocol    = "tcp"
@@ -31,6 +31,6 @@ resource "aws_security_group" "allow-external" {
     to_port     = "80"
   }
 
-  name   = "${var.project}-${var.environment}_allow-external-ecs"
-  vpc_id = data.aws_vpc.selected.id
+  name   = "${var.name_prefix}_allow-external-ecs"
+  vpc_id = var.vpc_id
 }
