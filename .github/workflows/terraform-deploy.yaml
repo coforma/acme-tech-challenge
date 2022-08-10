@@ -63,7 +63,7 @@ jobs:
         run: |
           terraform plan -input=false -var-file=dev/terraform.tfvars -var "app_image=$APP_IMAGE" -no-color
         env:
-          APP_IMAGE: steps.build-image.outputs.name
+          APP_IMAGE: ${{steps.build-image.outputs.name}}
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         id: apply
@@ -71,7 +71,7 @@ jobs:
         run:  |
           terraform apply -auto-approve -input=false -var-file=dev/terraform.tfvars -var "app_image=$APP_IMAGE"
         env:
-          APP_IMAGE: steps.build-image.outputs.name
+          APP_IMAGE: ${{steps.build-image.outputs.name}}
       - name: Terraform destroy
         if: github.ref == 'refs/heads/destroy'
         id: destroy
@@ -79,5 +79,5 @@ jobs:
         run:  |
           terraform destroy -auto-approve -input=false -var-file=dev/terraform.tfvars -var "app_image=$APP_IMAGE"
         env:
-          APP_IMAGE: steps.build-image.outputs.name
+          APP_IMAGE: ${{steps.build-image.outputs.name}}
 
