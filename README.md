@@ -64,6 +64,10 @@ When done with the entire solution, the terraform and ecr bootstrap can be torn 
 ```shell
 ./scripts/99-teardown-bootstrap.sh
 ```
+
+This should only be ran after tearing down each environment per above.
+When prompted and you are sure you want to remove the bootstrap code, enter `yes`.
+
 ## API verification instructions
 
 ## Usage instructions

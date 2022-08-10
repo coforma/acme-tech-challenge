@@ -13,7 +13,8 @@ resource "aws_ecr_repository" "acme-tech-challenge-ecr" {
 }
 
 resource "aws_s3_bucket" "acme-tech-challenge-s3" {
-  bucket = "${var.team}-${var.project}-tf-${data.aws_caller_identity.current.account_id}"
+  bucket        = "${var.team}-${var.project}-tf-${data.aws_caller_identity.current.account_id}"
+  force_destroy = true
 
   tags = {
     Project = "${var.project}"
