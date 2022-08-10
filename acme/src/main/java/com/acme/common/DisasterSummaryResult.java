@@ -1,9 +1,8 @@
 package com.acme.common;
 
-import lombok.Data;
+import java.io.Serializable;
 
-@Data
-public class DisasterSummaryResult {
+public class DisasterSummaryResult implements Serializable {
     private String status;
     private Long total;
 

@@ -37,7 +37,7 @@ public interface PatientDisasterStatusRepository extends JpaRepository<PatientDi
 //				"ORDER BY pds.date DESC) tmp) tmp2 " +
 //			"GROUP BY tmp.status",
 //			nativeQuery = true)
-	@Query(value = "SELECT new com.acme.common.DisasterSummaryResult(status, count(*)) FROM " +
+	@Query(value = "SELECT status, count(*) as total FROM " +
 		"(SELECT * FROM " +
 			"(SELECT pds.id, pds.patientId, pds.disasterId, pds.date, pds.statusId, ps.status, f.npi, f.stateCode " +
 				"FROM PatientDisasterStatus pds " +
