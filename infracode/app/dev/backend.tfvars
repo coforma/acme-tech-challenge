@@ -1,3 +1,3 @@
 region = "us-east-1"
-bucket = "acme-tech-challenge-tf"
-key    = "ecs-cluster/dev/terraform.tfstate"
+bucket = "coforma-acme-challenge-tf-905975536748"
+key    = "dev/terraform.tfstate"

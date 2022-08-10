@@ -21,11 +21,6 @@ jobs:
            - environment: test
              runner: ubuntu-latest
     env:
-         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
-         DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD }}
-         JWT_HEADER_SECRET:  ${{ secrets.JWT_HEADER_SECRET }}
          AWS_DEFAULT_REGION: us-east-1
     steps:
       - uses: actions/checkout@v2
@@ -45,11 +40,10 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: 905975536748.dkr.ecr.us-east-1.amazonaws.com
-          ECR_REPOSITORY: acme-tech-challenge
+          ECR_REPOSITORY: coforma-acme-challenge-app
         run: |
           # Build a docker container and push it to ECR
           export IMAGE_TAG=$(git rev-parse --short "$GITHUB_SHA")
-          ./acme/build-app-properties.sh $DATASOURCE_URL $DATASOURCE_PASSWORD $JWT_HEADER_SECRET
           docker build --quiet -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           echo "Pushing image to ECR..."
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -59,24 +53,31 @@ jobs:
           terraform_wrapper: false
       - name: Terraform Init
         id: init
+        working-directory: infracode/app
         run: |
            rm -rf .terraform
            terraform init -backend-config=dev/backend.tfvars -upgrade=true -no-color -input=false
       - name: Terraform Plan
         id: plan
+        working-directory: infracode/app
         run: |
-          export IMAGE_TAG=$(git rev-parse --short "$GITHUB_SHA")
-          terraform plan -input=false -var-file=dev/terraform.tfvars -var "image_tag=$IMAGE_TAG" -no-color
+          terraform plan -input=false -var-file=dev/terraform.tfvars -var "app_image=$APP_IMAGE" -no-color
+        env:
+          APP_IMAGE: steps.build-image.outputs.name
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         id: apply
+        working-directory: infracode/app
         run:  |
-          export IMAGE_TAG=$(git rev-parse --short "$GITHUB_SHA")
-          terraform apply -auto-approve -input=false -var-file=dev/terraform.tfvars -var "image_tag=$IMAGE_TAG"
+          terraform apply -auto-approve -input=false -var-file=dev/terraform.tfvars -var "app_image=$APP_IMAGE"
+        env:
+          APP_IMAGE: steps.build-image.outputs.name
       - name: Terraform destroy
         if: github.ref == 'refs/heads/destroy'
         id: destroy
+        working-directory: infracode/app
         run:  |
-          export IMAGE_TAG=$(git rev-parse --short "$GITHUB_SHA")
-          terraform destroy -auto-approve -input=false -var-file=dev/terraform.tfvars -var "image_tag=$IMAGE_TAG"
+          terraform destroy -auto-approve -input=false -var-file=dev/terraform.tfvars -var "app_image=$APP_IMAGE"
+        env:
+          APP_IMAGE: steps.build-image.outputs.name
 

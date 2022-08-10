@@ -1,5 +1,2 @@
 environment = "dev"
-vpc_id      = "vpc-05d877f12c50d08e7"
-platform    = "ecs"
-project     = "acme-challenge"
 region      = "us-east-1"
