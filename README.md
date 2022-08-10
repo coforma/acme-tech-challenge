@@ -1,21 +1,28 @@
 # acme-tech-challenge
+
 For Phase 3 of the ACME Tech Challenge
 
 ## Deployment instructions
 
-The below instructions walk through how to deploy and test this project. The instructions assume that they are being ran on an EC2 instance running the latest amazonlinux 2 AMI, and that the instructions are being ran from within a copy / clone of this git repository on that instance.
+The below instructions walk through how to deploy and test this project. The instructions assume that they are being ran on an EC2 instance running the latest amazonlinux 2 AMI, and that the instructions are being ran from within a copy / clone of this git repository on that instance.\*
 
 We also assume that the amazonlinux2 instance running the below steps has an IAM Role attached to the instance, with a policy matching the policy provided in [infracode/deploy-runner-policy.json](./infracode/deploy-runner-policy.json)
 
+\* You can download a zip of this git repository to your machine and perform an `scp` command to place it in the instance. Alternatively you can install git in the instance and clone the repository directly.
+
+_All of the following scripts assume you are in the EC2 instance and at the root directory of the repository._
+
 ### Install Necessary Tooling
 
-The below instructions require specific tools (mostly terraform, docker, and the aws cli) already be installed on the box. 
+The below instructions require specific tools (mostly terraform, docker, and the aws cli) already be installed on the box.
 
 To ensure they are installed, please run as a one time action
 
 ```shell
 ./scripts/01-install-deps.sh
 ```
+
+To complete the docker cli setup, **please log out and log back into the EC2 instance**. This is due to a group change made by the docker install.
 
 ### Bootstrap Terraform / AWS Environment
 
@@ -41,7 +48,7 @@ Additional environment copies can be deployed as desired by varying the value af
 
 ### Test and Verify
 
-TODO
+Allow about 5-10 minutes between finishing the Build and Deploy step and running the test script. This time allows the service to warm up.
 
 ```shell
 ./scripts/04-test.sh --environment submission
