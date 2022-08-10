@@ -5,12 +5,12 @@ output "application_endpoint" {
 
 output "jumpbox_public_ip" {
   description = "public ip for test jumpbox"
-  value       = module.jumpbox.jumpbox_public_ip
+  value       = module.jumpbox.public_ip
 }
 
 output "jumpbox_instance_id" {
   description = "instance id for test jumpbox"
-  value       = module.jumpbox.jumpbox_instance_id
+  value       = module.jumpbox.id
 }
 
 output "database_endpoint" {
