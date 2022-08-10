@@ -169,6 +169,7 @@ public class PatientDisasterStatusService {
 				stateId,
 				status);
 		DisasterSummaryOutput out = new DisasterSummaryOutput();
+
 		for (DisasterSummaryResult r: results) {
 			switch (r.getStatus()) {
 				case "unaffected":

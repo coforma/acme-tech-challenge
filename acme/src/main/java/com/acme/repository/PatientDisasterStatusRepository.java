@@ -37,26 +37,26 @@ public interface PatientDisasterStatusRepository extends JpaRepository<PatientDi
 //				"ORDER BY pds.date DESC) tmp) tmp2 " +
 //			"GROUP BY tmp.status",
 //			nativeQuery = true)
-@Query(value = "SELECT status, count(*) as total FROM " +
+	@Query(value = "SELECT new com.acme.common.DisasterSummaryResult(status, count(*)) FROM " +
 		"(SELECT * FROM " +
 			"(SELECT pds.id, pds.patientId, pds.disasterId, pds.date, pds.statusId, ps.status, f.npi, f.stateCode " +
 				"FROM PatientDisasterStatus pds " +
 				"JOIN Patient as p ON pds.patientId = p.id " +
 				"JOIN Facility as f ON p.facilityNpi = f.npi " +
 				"JOIN PatientStatus as ps ON pds.statusId = ps.id " +
-				"WHERE pds.disasterId = :disasterId " +
-					"AND (:facilityNpi IS NULL OR f.npi = :facilityNpi) " +
-					"AND (:stateId IS NULL OR f.stateCode = :stateId) " +
-					"AND (:status IS NULL OR ps.status = :status) " +
-					"AND (:timeFrame IS NULL OR f.npi = :facilityNpi) " + // TODO: TIMEFRAME LOGIC
+				"WHERE pds.disasterId = ?1 " +
+					"AND (?2 IS NULL OR f.npi = ?2) " +
+					"AND (?4 IS NULL OR f.stateCode = ?4) " +
+					"AND (?5 IS NULL OR ps.status = ?5) " +
+					"AND (?3 IS NULL OR f.npi = ?2) " + // TODO: TIMEFRAME LOGIC
 				") tmp " +
 			"WHERE id IN (SELECT MAX(id) FROM PatientDisasterStatus GROUP BY patientId)) tmp2 " +
 		"GROUP BY status",
 		nativeQuery = true)
-	List<DisasterSummaryResult> findDisasterSummary(@Param("disasterId") Long disasterId,
-													@Param("facilityNpi") Long facilityNpi,
-													@Param("timeFrame") String timeFrame,
-													@Param("stateId") Integer stateId,
-													@Param("status") String status);
+	List<DisasterSummaryResult> findDisasterSummary(Long disasterId,
+													Long facilityNpi,
+													String timeFrame,
+													Integer stateId,
+													String status);
 
 }

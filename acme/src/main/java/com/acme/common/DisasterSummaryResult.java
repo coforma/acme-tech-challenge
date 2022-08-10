@@ -6,4 +6,9 @@ import lombok.Data;
 public class DisasterSummaryResult {
     private String status;
     private Long total;
+
+    public DisasterSummaryResult(String status, Long total) {
+        this.status = status;
+        this.total = total;
+    }
 }
