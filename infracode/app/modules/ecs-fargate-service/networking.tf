@@ -19,31 +19,9 @@ resource "aws_lb_target_group" "app" {
   protocol                      = "HTTP"
   slow_start                    = "120"
   target_type                   = "ip"
-  vpc_id                        = data.aws_vpc.selected.id
+  vpc_id                        = var.vpc_id
 
   lifecycle {
     create_before_destroy = true
   }
 }
-
-/*resource "aws_lb_listener_rule" "app" {
-  listener_arn = aws_lb_listener.lb_listener.arn
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
-  }
-
-  condition {
-    path_pattern {
-      values = [var.path]
-    }
-  }
-
-  condition {
-    host_header {
-      values = ["test.abc.com"]
-    }
-  }
-}
-*/

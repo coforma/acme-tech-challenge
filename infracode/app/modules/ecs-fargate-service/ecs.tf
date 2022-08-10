@@ -4,7 +4,11 @@ resource "aws_ecs_cluster" "cluster" {
     name  = "containerInsights"
     value = "enabled"
   }
-  capacity_providers = ["FARGATE", ]
+}
+
+resource "aws_ecs_cluster_capacity_providers" "cluster" {
+  cluster_name       = aws_ecs_cluster.cluster.name
+  capacity_providers = ["FARGATE"]
 }
 
 resource "aws_ecs_service" "service" {
@@ -36,9 +40,8 @@ resource "aws_ecs_service" "service" {
 
   network_configuration {
     assign_public_ip = "true"
-    //security_groups  = ["sg-0d784290d6fd5c6a9"]
-   security_groups  = [aws_security_group.allow-external.id]
-    subnets          = data.aws_subnet_ids.public.ids
+    security_groups  = [aws_security_group.allow-external.id]
+    subnets          = var.vpc_public_subnets
   }
 
 
@@ -46,6 +49,16 @@ resource "aws_ecs_service" "service" {
     aws_ecs_task_definition.app,
     aws_lb.lb
   ]
+}
+
+resource "aws_cloudwatch_log_group" "ecs_service_logs" {
+  name = "${var.project}-${var.environment}-app-logs"
+
+  tags = {
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Team        = "${var.team}"
+  }
 }
 
 resource "aws_ecs_task_definition" "app" {
@@ -59,15 +72,14 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = jsonencode([
     {
       name  = "${var.project}-${var.environment}"
-      image = "905975536748.dkr.ecr.us-east-1.amazonaws.com/acme-tech-challenge:${var.image_tag}"
-      //image = "905975536748.dkr.ecr.us-east-1.amazonaws.com/acme-tech-challenge:5a642f8"
+      image = "${var.app_image}"
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-            awslogs-group         = "${var.project}-${var.environment}-app-logs",
-            awslogs-region        = "us-east-1",
-            awslogs-stream-prefix = "${var.project}",
-            awslogs-create-group  = "true"
+          awslogs-group         = "${var.project}-${var.environment}-app-logs",
+          awslogs-region        = "us-east-1",
+          awslogs-stream-prefix = "${var.project}",
+          awslogs-create-group  = "true"
         }
       }
       portMappings = [
@@ -78,7 +90,8 @@ resource "aws_ecs_task_definition" "app" {
         }
       ]
       essential = true
-      environment : local.app_definitions
+      environment = local.app_definitions
+      secrets = var.app_secrets
     }
     ]
   )

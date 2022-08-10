@@ -1,42 +1,10 @@
- resource "aws_lb" "lb" {
+resource "aws_lb" "lb" {
   name               = "${var.project}-${var.environment}"
   load_balancer_type = "application"
   internal           = false
-  subnets          = data.aws_subnet_ids.public.ids
+  subnets            = var.vpc_public_subnets
 
-
-  security_groups = [aws_security_group.allow-internal.id, aws_security_group.allow-external1.id]
-}
-
-resource "aws_security_group" "allow-internal" {
-  description = "Allows all traffic within the VPC"
-
-  egress {
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port   = "0"
-    protocol    = "-1"
-    self        = "false"
-    to_port     = "0"
-  }
-
-  ingress {
-    cidr_blocks = [data.aws_vpc.selected.cidr_block]
-    from_port   = "80"
-    protocol    = "tcp"
-    self        = "false"
-    to_port     = "80"
-  }
-
-  ingress {
-    cidr_blocks = [data.aws_vpc.selected.cidr_block]
-    from_port   = "443"
-    protocol    = "tcp"
-    self        = "false"
-    to_port     = "443"
-  }
-
-  name   = "${var.project}-${var.environment}_allow-internal"
-  vpc_id = data.aws_vpc.selected.id
+  security_groups = [aws_security_group.allow-external1.id]
 }
 
 resource "aws_security_group" "allow-external1" {
@@ -67,7 +35,7 @@ resource "aws_security_group" "allow-external1" {
   }
 
   name   = "${var.project}-${var.environment}_allow-external"
-  vpc_id = data.aws_vpc.selected.id
+  vpc_id = var.vpc_id
 }
 
 resource "aws_lb_listener" "lb_listener" {
@@ -76,7 +44,7 @@ resource "aws_lb_listener" "lb_listener" {
   protocol          = "HTTP"
 
   default_action {
-   type             = "forward"
+    type             = "forward"
     target_group_arn = aws_lb_target_group.app.arn
   }
 }
