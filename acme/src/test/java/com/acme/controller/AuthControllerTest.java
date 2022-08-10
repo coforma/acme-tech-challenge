@@ -3,7 +3,7 @@ package com.acme.controller;
 import com.acme.AcmeApplicationTests;
 import com.acme.request.model.LoginInput;
 import com.acme.request.model.LoginOutput;
-import com.acme.service.UserService;
+import com.acme.service.AuthService;
 import org.junit.Assert;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class AuthControllerTest extends AcmeApplicationTests {
@@ -21,7 +20,7 @@ public class AuthControllerTest extends AcmeApplicationTests {
 	@Autowired
 	AuthController authController;
 	@Autowired
-	UserService userService;
+	AuthService userService;
 
 	@Test
 	public void testControllerReturnsToken() {

@@ -2,9 +2,7 @@ package com.acme.service;
 
 import java.util.List;
 
-import com.acme.config.GlobalExceptionHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.acme.request.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
@@ -22,10 +20,6 @@ import com.acme.repository.FacilityRepository;
 import com.acme.repository.PatientDisasterStatusRepository;
 import com.acme.repository.PatientRepository;
 import com.acme.repository.PatientStatusRepository;
-import com.acme.request.model.GetPatientDisasterStatusInput;
-import com.acme.request.model.GetPatientDisasterStatusOutput;
-import com.acme.request.model.PutPatientDisasterStatusInput;
-import com.acme.request.model.PutPatientDisasterStatusOutput;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -156,5 +150,15 @@ public class PatientDisasterStatusService {
 			return null;
 		return patient;
 
+	}
+
+	public List<PatientDisasterStatus> getDisasterSummary(DisasterSummaryInput disasterSummaryInput) {
+//		public DisasterSummaryOutput getDisasterSummary(DisasterSummaryInput disasterSummaryInput) {
+		List<PatientDisasterStatus> results = disasterStatusRepository.findDisasterSummary(disasterSummaryInput.getDisasterId(),
+				disasterSummaryInput.getFacilityNpi());
+//				disasterSummaryInput.getTimeFrame(),
+//				disasterSummaryInput.getStatusId(),
+//				disasterSummaryInput.getStateId());
+		return results;
 	}
 }

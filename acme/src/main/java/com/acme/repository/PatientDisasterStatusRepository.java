@@ -2,6 +2,7 @@ package com.acme.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,20 @@ public interface PatientDisasterStatusRepository extends JpaRepository<PatientDi
 	+ " ORDER BY pds.date DESC")
 	List<PatientDisasterStatus> findLatestByFacilityAndPatientFacilityId(@Param("facilityNpi") String facilityNpi,
 			@Param("patientIdFromFacility") String patientIdFromFacility, Pageable pageable);
+
+
+	@Query(value = "SELECT DISTINCT patientId, disasterId FROM " +
+			"(SELECT pds FROM PatientDisasterStatus pds" +
+			"JOIN pds.patient p " +
+			"JOIN pds.pateintStatus ps" +
+			"WHERE p.facility.npi = :facilityNpi " +
+				"AND pds.disasterId = :disasterId" +
+			"ORDER BY pds.date DESC) tmp",
+			nativeQuery = true)
+	List<PatientDisasterStatus> findDisasterSummary( @Param("disasterId") Long disasterId,
+													 @Param("facilityNpi") Long facilityNpi);
+//													 @Param("timeFrame") String timeFrame,
+//													 @Param("stateId") Integer stateId,
+//													 @Param("statusId") Integer statusId);
 
 }
