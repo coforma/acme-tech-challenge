@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-pushd infracode/bootstrap
+pushd infracode/bootstrap || exit 1
 terraform init
 terraform apply -auto-approve -input=false
-popd
+popd || exit 1

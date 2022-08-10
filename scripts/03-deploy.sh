@@ -33,14 +33,14 @@ TERRAFORM_BUCKET="coforma-acme-challenge-tf-$AWS_ACCOUNT_ID"
 ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
 ECR_REPOSITORY="coforma-acme-challenge-app"
 
-aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
-docker buildx build --platform linux/amd64 --quiet -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
+docker buildx build --platform linux/amd64 --quiet -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
 
 echo "Pushing image to ECR..."
-docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-pushd infracode/app
+pushd infracode/app || exit 1
 terraform init --backend-config="bucket=$TERRAFORM_BUCKET" --backend-config="region=$AWS_REGION" --backend-config="key=$ENVIRONMENT/terraform.tfstate" -upgrade=true -no-color -input=false --reconfigure
 # terraform plan -input=false -var "environment=$ENVIRONMENT" -var "app_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 terraform apply -input=false -var "environment=$ENVIRONMENT" -var "app_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" -auto-approve -input=false
-popd
+popd || exit 1

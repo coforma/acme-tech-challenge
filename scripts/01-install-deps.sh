@@ -2,7 +2,7 @@
 #
 #update yum
 printf "STEP: yum update -y\n"
-cd
+cd || exit 1
 sudo yum update -y
 printf "\n\n"
 
