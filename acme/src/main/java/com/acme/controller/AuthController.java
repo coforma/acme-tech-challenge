@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,10 +21,9 @@ public class AuthController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping(value = "/login")
-    @Operation(summary = "Login with a username and password", description = "Returns a valid JWT for a user to be used with the API")
+    @Operation(summary = "Return a JWT for a username", description = "Returns a JWT with a 15 minute timeout for a user API auth. Valid Demo usernames: 'userEhr', 'userEhrAlaska', 'userGovt', 'userFsa'")
     public LoginOutput login(@RequestBody LoginInput loginInput) {
-        logger.info("Welcome");
-        return userService.Login(loginInput);
+        return userService.login(loginInput);
     }
 
 }

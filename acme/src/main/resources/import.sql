@@ -90,5 +90,6 @@ insert into PatientStatus (id, status) values (105, 'deceased');
 insert into PatientStatus (id, status) values (106, 'isolated');
 
 insert into UserAccount (name, password, roles, facilityNpi) values ('userEhr', 'abcd1234', 'EHR', '1003906488');
+insert into UserAccount (name, password, roles, facilityNpi) values ('userEhrAlaska', 'abcd1234', 'EHR', '1053866467');
 insert into UserAccount (name, password, roles, facilityNpi) values ('userGovt', 'abcd1234', 'GOVT', '1417101098');
 insert into UserAccount (name, password, roles, facilityNpi) values ('userFsa', 'abcd1234', 'FSA', '1053866467');
