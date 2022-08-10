@@ -1,7 +1,7 @@
 FROM maven:3.8-openjdk-18-slim AS builder
 COPY ./acme /app/
 WORKDIR /app/
-RUN mvn clean install -Dmaven.test.skip -DskipTests 
+RUN mvn clean install
    
 FROM openjdk:18-alpine
 MAINTAINER com.coforma
