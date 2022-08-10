@@ -34,7 +34,11 @@ ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
 ECR_REPOSITORY="coforma-acme-challenge-app"
 
 aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
-docker buildx build --platform linux/amd64 --quiet -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+if [[ $(uname -s) == "Darwin" && $(uname -m) == "arm64" ]]; then
+    docker buildx build --platform linux/amd64 --quiet -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+else
+    docker build --quiet -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+fi
 
 echo "Pushing image to ECR..."
 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
