@@ -25,21 +25,6 @@ variable "app_image" {
   type        = string
   description = "Docker image of api app"
 }
-
-# variable "datasource_url" {
-#     type = string
-# }
-
-# variable "datasource_password" {
-#   type = string
-#   sensitive = true
-# }
-
-# variable "jwt_header_secret" {
-#   type = string
-#   sensitive = true
-# }
-
 variable "database_user" {
   type    = string
   default = "skywalker"
