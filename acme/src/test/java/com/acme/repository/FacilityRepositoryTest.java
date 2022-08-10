@@ -1,5 +1,7 @@
 package com.acme.repository;
 
+import com.acme.repository.interfaces.FacilityRepository;
+import com.acme.repository.interfaces.StateCodeRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,10 +20,10 @@ public class FacilityRepositoryTest extends AcmeApplicationTests {
 
 	static Long facilityId = null;
 	@Autowired
-	FacilityRepository facilityRepository;
+    FacilityRepository facilityRepository;
 	
 	@Autowired
-	StateCodeRepository stateCodeRepository;
+    StateCodeRepository stateCodeRepository;
 
 	
 	@Order(1)  

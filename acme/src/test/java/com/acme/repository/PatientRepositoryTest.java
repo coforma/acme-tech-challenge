@@ -1,5 +1,7 @@
 package com.acme.repository;
 
+import com.acme.repository.interfaces.FacilityRepository;
+import com.acme.repository.interfaces.PatientRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,10 +20,10 @@ public class PatientRepositoryTest extends AcmeApplicationTests {
 	static Long patientId = null;
 	
 	@Autowired
-	PatientRepository patientRepository;
+    PatientRepository patientRepository;
 	
 	@Autowired
-	FacilityRepository facilityRepository;
+    FacilityRepository facilityRepository;
 
 	
 	@Order(1)  

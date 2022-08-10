@@ -3,6 +3,7 @@ package com.acme.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.acme.repository.interfaces.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,19 +27,19 @@ public class PatientDisasterStatusRepositoryTest extends AcmeApplicationTests {
 	static Long patientDisasterStatusId = null;
 	
 	@Autowired
-	PatientRepository patientRepository;
+    PatientRepository patientRepository;
 	
 	@Autowired
-	DisasterRepository disasterRepository;
+    DisasterRepository disasterRepository;
 	
 	@Autowired
-	PatientStatusRepository patientStatusRepository;
+    PatientStatusRepository patientStatusRepository;
 	
 	@Autowired
-	PatientDisasterStatusRepository patientDisasterStatusRepository;
+    PatientDisasterStatusRepository patientDisasterStatusRepository;
 
 	@Autowired
-	FacilityRepository facilityRepository;
+    FacilityRepository facilityRepository;
 	
 	
 	@Order(1)  

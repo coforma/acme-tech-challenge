@@ -2,6 +2,7 @@ package com.acme.repository;
 
 import java.time.LocalDateTime;
 
+import com.acme.repository.interfaces.DisasterRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,7 +24,7 @@ public class DisasterRepositoryTest extends AcmeApplicationTests {
 
 	/** The disaster repository. */
 	@Autowired
-	DisasterRepository disasterRepository;
+    DisasterRepository disasterRepository;
 
 	/** The disaster id. */
 	static Long disasterId = null;

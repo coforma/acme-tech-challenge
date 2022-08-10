@@ -71,9 +71,10 @@ public class PatientDisasterStatusController {
 	@GetMapping("/")
 	public GetPatientDisasterStatusOutput getPatientDisasterStatus(@RequestParam(required=true) Long facilityNpi , @RequestParam(required=true) String patientIdFromFacility 
 			, Authentication authentication) {
-		
-		
-		checkPermissions(facilityNpi, authentication);
+
+		if(!authentication.getAuthorities().contains("GOVT")) {
+			checkPermissions(facilityNpi, authentication);
+		}
 	
 		return patientDisasterStatusService.getPatientStatus(facilityNpi, patientIdFromFacility);
 	}

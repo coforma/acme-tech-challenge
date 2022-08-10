@@ -1,5 +1,6 @@
 package com.acme.repository;
 
+import com.acme.repository.interfaces.StateCodeRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import com.acme.model.StateCode;
 public class StateCodeRepositoryTest extends AcmeApplicationTests {
 
 	@Autowired
-	StateCodeRepository stateCodeRepository;
+    StateCodeRepository stateCodeRepository;
 
 
 	
