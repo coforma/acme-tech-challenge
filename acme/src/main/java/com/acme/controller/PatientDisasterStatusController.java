@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,16 +14,18 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.acme.common.AppUser;
 import com.acme.common.RolesEnum;
-import com.acme.model.PatientDisasterStatus;
 import com.acme.request.model.GetPatientDisasterStatusOutput;
 import com.acme.request.model.PutPatientDisasterStatusInput;
 import com.acme.request.model.PutPatientDisasterStatusOutput;
 import com.acme.service.PatientDisasterStatusService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class PatientDisasterStatusController.
  */
+@SecurityRequirement(name = "ACME_API_JWT_TOKEN")
 @RestController
 @RequestMapping("/patientStatus/")
 public class PatientDisasterStatusController {
