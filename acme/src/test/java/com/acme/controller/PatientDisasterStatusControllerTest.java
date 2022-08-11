@@ -90,11 +90,10 @@ public class PatientDisasterStatusControllerTest extends AcmeApplicationTests {
 	@Order(3)
 	@Test
 	public void testDelete() {
-		List<PatientDisasterStatus> patientDisasterStatusList = patientDisasterStatusRepository.findLatestByFacilityAndPatientFacilityId("1003906488", "patientidfromfacility-test-001", Pageable.ofSize(1));
-		Assert.assertNotNull(patientDisasterStatusList);
-		Assert.assertNotNull(patientDisasterStatusList.get(0).getPatient());
-		patientDisasterStatusRepository.deleteById(patientDisasterStatusList.get(0).getId());
-		patientRepository.delete(patientDisasterStatusList.get(0).getPatient());
+		PatientDisasterStatus patientDisasterStatus = patientDisasterStatusRepository.findLatestByFacilityAndPatientFacilityId("1003906488", "patientidfromfacility-test-001");
+		Assert.assertNotNull(patientDisasterStatus.getPatient());
+		patientDisasterStatusRepository.deleteById(patientDisasterStatus.getId());
+		patientRepository.delete(patientDisasterStatus.getPatient());
 	}
 	
 	/**
