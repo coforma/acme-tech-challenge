@@ -4,7 +4,7 @@
 2.  Application is loaded with seed data for Disaster , PatientStatus , Facility, UserAccount. Specifics are listed in [acme/src/main/resources/import.sql](acme/src/main/resources/import.sql)
 3.  Perform a POST to the /auth/login endpoint to a JWT for the user type you want to test against. Types are listed in the Swagger File and appear in the UI description. The token is returned in the API response. The last part of the username corresponds to the role the user has. The JWT is valid for 30 minutes.
 4. Click the `Authorize` button towards the top of the Swagger UI to set the value of ACME_API_JWT_TOKEN using the token returned from the previous step
-5. To create new PatientDisasterUpdate set authorization header of user with EHR role. Only EHR role users have permissions to create a patientdisasterstatus record. Other users will get a 403.
+5. To create new a PatientDisasterUpdate, perform steps 3 and 4 with the EHR role. Only EHR role users have permission to create a PatientDisasterStatus record. Other users are unauthorized.
 6. Invoke POST /patientStatus/ with sample parameters as below
 - *facilityNpi* must match a seeded facility as well as the EHR user claim making the call
 - *patientIdFromFacility* any string, will need later for lookup
