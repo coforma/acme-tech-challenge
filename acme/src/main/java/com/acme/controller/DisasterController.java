@@ -9,6 +9,7 @@ import com.acme.request.model.DisasterSummaryInput;
 import com.acme.request.model.DisasterSummaryOutput;
 import com.acme.service.AuthService;
 import com.acme.service.PatientDisasterStatusService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +39,11 @@ public class DisasterController {
     @PreAuthorize("hasAnyRole('FSA','GOVT')")
     @GetMapping("/")
     public DisasterSummaryOutput facilityDisasterSummary(
-            @RequestParam("disasterId") Long disasterId,
-            @RequestParam("facilityNpi") Optional<Long> facilityNpi,
-            @RequestParam("stateId") Optional<Integer> stateId,
-            @RequestParam("timeFrame") Optional<String> timeFrame,
-            @RequestParam("statusId") Optional<Integer> statusId,
+            @Parameter(description = "The ID of the disaster. (ex: 1001)") @RequestParam("disasterId") Long disasterId,
+            @Parameter(description = "The NPI of the facility. (ex: 44)") @RequestParam("facilityNpi") Optional<Long> facilityNpi,
+            @Parameter(description = "The StateID correlating to facility locations (ex: 12).") @RequestParam("stateId") Optional<Integer> stateId,
+            @Parameter(description = "Time to retrieve results up until. (format yyyymmdd)") @RequestParam("timeFrame") Optional<String> timeFrame,
+            @Parameter(description = "The ID of the status. (ex: 101 for unaffected)") @RequestParam("statusId") Optional<Integer> statusId,
             Authentication authentication
     ) {
         Long facilityNpiLong = facilityNpi.orElse(null);
