@@ -52,7 +52,11 @@ public class PatientDisasterStatusController {
 	@Operation(summary = "Create a new update for a single patient's status",
 			description = "Accepts an update for a patient. Requires the facility's NPI, the facility's patient ID, the " +
 					"ID of the disaster impacting the patient, the ID of their current status, and the date that this update " +
-					"was recorded on. On success, the endpoint will return the API's generated ID for the patient.")
+					"was recorded on. On success, the endpoint will return the API's generated ID for the patient.\n\n" +
+					"Example fields:\n\n" +
+					"* DisasterID: `1001`\n\n" +
+					"* FacilityNPI: `1003906488`\n\n" +
+					"* StatusID: `101`")
 	public PutPatientDisasterStatusOutput newPatientDisasterStatus(
 			PutPatientDisasterStatusInput putPatientDisasterStatusInput, Authentication authentication) {
 		
@@ -82,7 +86,11 @@ public class PatientDisasterStatusController {
 	@GetMapping("/")
 	@Operation(summary = "Return a single patient's most recent information",
 			description = "Returns a patient's ID (not the facility's ID), and information about their most recently recorded " +
-					"update including the date of record, the name of the disaster, their status, and the location of the facility.")
+					"update includes:\n\n" +
+					"* the date of record\n\n" +
+					"* the name of the disaster\n\n" +
+					"* the patient's status\n\n" +
+					"* the location of the facility.")
 	public GetPatientDisasterStatusOutput getPatientDisasterStatus(
 			@Parameter(description = "The Facility's NPI (ex: `1003906488`))") @RequestParam(required=true) Long facilityNpi,
 		    @Parameter(description = "The ID attached to a patient at the facility. (ex: `myCustomFacilityId123`)") @RequestParam(required=true) String patientIdFromFacility,

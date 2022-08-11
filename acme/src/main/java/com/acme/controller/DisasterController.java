@@ -40,9 +40,8 @@ public class DisasterController {
     @PreAuthorize("hasAnyRole('FSA','GOVT')")
     @GetMapping("/")
     @Operation(summary = "Return a summary of patient impact",
-            description = "Accepts an update for a patient. Requires the facility's NPI, the facility's patient ID, the " +
-                    "ID of the disaster impacting the patient, the ID of their current status, and the date that this update was recorded on. " +
-                    "On success, the endpoint will return the API's generated ID for the patient.")
+            description = "Returns a count of patient impact by status, with the ability to filter using parameters for which disaster, " +
+                    "which facility, which state, the timeframe, and patient status.")
     public DisasterSummaryOutput facilityDisasterSummary(
             @Parameter(description = "The ID of the disaster. (ex: `1001`)") @RequestParam("disasterId") Long disasterId,
             @Parameter(description = "The NPI of the facility. (ex: `44`)") @RequestParam("facilityNpi") Optional<Long> facilityNpi,
