@@ -32,3 +32,7 @@ echo "Testing Swagger UI is available"
 curl -I http://$APPLICATION_ENDPOINT/swagger-ui/index.html
 
 # TODO add addition API verification tests
+
+
+echo "Application running at http://$APPLICATION_ENDPOINT/"
+echo "Before tearing down the infracode  (STEP 5) please do any manual testing that you would like"
