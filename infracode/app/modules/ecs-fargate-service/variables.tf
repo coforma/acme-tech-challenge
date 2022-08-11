@@ -4,6 +4,11 @@ variable "image_tag" {
   description = "Docker image tag to deploy"
 }
 
+variable "app_image" {
+  type        = string
+  description = "Docker image of api app"
+}
+
 variable "cpu" {
   default     = 512
   type        = number
@@ -64,6 +69,16 @@ variable "vpc_id" {
   description = "VPC ID to use for the resources"
 }
 
+variable "vpc_public_subnets" {
+  type        = list(any)
+  description = "Public Subnets for VPC"
+}
+
+variable "vpc_private_subnets" {
+  type        = list(any)
+  description = "Private Subnets for VPC"
+}
+
 variable "task_iam_policy" {
   default     = ""
   description = "Policy document for ecs task"
@@ -72,6 +87,13 @@ variable "task_iam_policy" {
 variable "app_definitions" {
   default     = ""
   description = "Map of environment variables for the application"
+}
+
+variable "app_secrets" {
+  type        = list(any)
+  default     = []
+  sensitive   = true
+  description = "List of sensative data to inject into the container definitions"
 }
 
 variable "deployment_maximum_percent" {
@@ -92,4 +114,11 @@ variable "health_check_grace_period_seconds" {
 variable "platform_version" {
   default     = "1.4.0"
   description = "Platform version on which to run your service."
+}
+
+variable "team" { default = "coforma" }
+
+variable "name_prefix" {
+  type        = string
+  description = "Prefix to apply to resources"
 }

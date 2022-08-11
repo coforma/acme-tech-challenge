@@ -1,14 +1,18 @@
 resource "aws_ecs_cluster" "cluster" {
-  name = "${var.project}-${var.environment}"
+  name = var.name_prefix
   setting {
     name  = "containerInsights"
     value = "enabled"
   }
-  capacity_providers = ["FARGATE", ]
+}
+
+resource "aws_ecs_cluster_capacity_providers" "cluster" {
+  cluster_name       = aws_ecs_cluster.cluster.name
+  capacity_providers = ["FARGATE"]
 }
 
 resource "aws_ecs_service" "service" {
-  name                               = "${var.project}-${var.environment}"
+  name                               = var.name_prefix
   cluster                            = aws_ecs_cluster.cluster.id
   desired_count                      = var.replicas
   wait_for_steady_state              = true
@@ -29,16 +33,15 @@ resource "aws_ecs_service" "service" {
 
 
   load_balancer {
-    container_name   = "${var.project}-${var.environment}"
+    container_name   = var.name_prefix
     container_port   = var.port
     target_group_arn = aws_lb_target_group.app.arn
   }
 
   network_configuration {
     assign_public_ip = "true"
-    //security_groups  = ["sg-0d784290d6fd5c6a9"]
-   security_groups  = [aws_security_group.allow-external.id]
-    subnets          = data.aws_subnet_ids.public.ids
+    security_groups  = [aws_security_group.allow-external.id]
+    subnets          = var.vpc_public_subnets
   }
 
 
@@ -48,9 +51,19 @@ resource "aws_ecs_service" "service" {
   ]
 }
 
+resource "aws_cloudwatch_log_group" "ecs_service_logs" {
+  name = "${var.name_prefix}-app-logs"
+
+  tags = {
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Team        = "${var.team}"
+  }
+}
+
 resource "aws_ecs_task_definition" "app" {
   execution_role_arn       = aws_iam_role.task.arn
-  family                   = "${var.project}-${var.environment}"
+  family                   = var.name_prefix
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = aws_iam_role.task.arn
@@ -58,16 +71,15 @@ resource "aws_ecs_task_definition" "app" {
   memory                   = var.memory
   container_definitions = jsonencode([
     {
-      name  = "${var.project}-${var.environment}"
-      image = "905975536748.dkr.ecr.us-east-1.amazonaws.com/acme-tech-challenge:${var.image_tag}"
-      //image = "905975536748.dkr.ecr.us-east-1.amazonaws.com/acme-tech-challenge:5a642f8"
+      name  = "${var.name_prefix}"
+      image = "${var.app_image}"
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-            awslogs-group         = "${var.project}-${var.environment}-app-logs",
-            awslogs-region        = "us-east-1",
-            awslogs-stream-prefix = "${var.project}",
-            awslogs-create-group  = "true"
+          awslogs-group         = "${var.name_prefix}-app-logs",
+          awslogs-region        = "us-east-1",
+          awslogs-stream-prefix = "${var.project}",
+          awslogs-create-group  = "true"
         }
       }
       portMappings = [
@@ -77,8 +89,9 @@ resource "aws_ecs_task_definition" "app" {
           protocol      = "tcp"
         }
       ]
-      essential = true
-      environment : local.app_definitions
+      essential   = true
+      environment = local.app_definitions
+      secrets     = var.app_secrets
     }
     ]
   )

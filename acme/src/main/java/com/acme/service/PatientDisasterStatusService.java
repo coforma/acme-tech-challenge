@@ -111,7 +111,7 @@ public class PatientDisasterStatusService {
 			response.setDisasterName(pds.getDisaster().getName());
 			if (pds.getPatient() != null) {
 				if (pds.getPatient().getFacility() != null) {
-					response.setFacilityLocation(pds.getPatient().getFacility().getFacilityName());
+					response.setFacilityLocation(pds.getPatient().getFacility().getStateCode().getName());
 				}
 				if (pds.getPatient().getId() != null) {
 					response.setPatientId(pds.getPatient().getId().toString());
