@@ -110,7 +110,7 @@ Accepts an update for a patient. Requires the facility's NPI, the facility's pat
 |`date`|The date the patient was impacted by the disaster (format: `YYYY-MM-ddThh:mm:ss.SSSZ`)|REQUIRED|
 |`statusId`|The status ID corresponding to the patient's current status (ex: `101`)|REQUIRED|
 
-The `facilityNpi`, `disasterId`, and `statusId` should correspond to an existing ID seeded in the database. The `patientIdFromFacility` can be any string that the facility would use. The `date` conforms to ISO 8601, and should follow the format.
+The `facilityNpi`, `disasterId`, and `statusId` should correspond to an existing ID seeded in the database. The `patientIdFromFacility` can be any string that the facility would use.
 
 ##### Sample response body
 
