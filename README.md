@@ -1,6 +1,6 @@
 # acme-tech-challenge
 
-This is Coforma
+This is Coforma's response to the technical challenge for Phase 3 of RFQ 75FCMC21Q0013
 ## Deployment instructions
 
 The below instructions walk through how to deploy and test this project. The instructions assume that they are being ran on an EC2 instance running the latest amazonlinux 2 AMI, and that the instructions are being ran from within a copy / clone of this git repository on that instance.
