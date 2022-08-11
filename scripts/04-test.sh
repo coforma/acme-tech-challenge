@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+# Run unit tests
+pushd acme/ || exit 1
+./mvnw clean test
+popd || exit 1
+
 AWS_REGION="us-east-1"
 ENVIRONMENT="prod"
 while [ "$#" -gt 0 ]; do
@@ -31,8 +36,58 @@ popd || exit 1
 echo "Testing Swagger UI is available"
 curl -I http://$APPLICATION_ENDPOINT/swagger-ui/index.html
 
-# TODO add addition API verification tests
+API_BASE="http://$APPLICATION_ENDPOINT"
 
+echo "Logging into API as EHR"
+EHR_AUTH_TOKEN=$(curl -s -X 'POST' \
+  "$API_BASE/auth/login" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "userEhr"
+}' | jq -r '.token')
 
-echo "Application running at http://$APPLICATION_ENDPOINT/"
-echo "Before tearing down the infracode  (STEP 5) please do any manual testing that you would like"
+echo "Send Patient Statuses for Disaster 1001"
+echo "Create patient with id: patient1"
+curl -s -X 'POST' \
+  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient1&disasterId=1001&date=2022-08-11T13:36:27.242Z&statusId=102" \
+  -H 'accept: application/json' \
+  -H "ACME_API_JWT_TOKEN: $EHR_AUTH_TOKEN"
+echo
+
+echo "Create patient with id: patient2"
+curl -s -X 'POST' \
+  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient2&disasterId=1001&date=2022-08-11T13:36:28.242Z&statusId=102" \
+  -H 'accept: application/json' \
+  -H "ACME_API_JWT_TOKEN: $EHR_AUTH_TOKEN"
+echo
+
+echo "Create patient with id: patient3"
+curl -s -X 'POST' \
+  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient3&disasterId=1001&date=2022-08-11T13:36:29.242Z&statusId=103" \
+  -H 'accept: application/json' \
+  -H "ACME_API_JWT_TOKEN: $EHR_AUTH_TOKEN"
+echo
+
+printf "\n"
+
+echo "Logging into API as Government User"
+GOVT_AUTH_TOKEN=$(curl -s -X 'POST' \
+  "$API_BASE/auth/login" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "userGovt"
+}' | jq -r '.token')
+
+echo "Get Disaster 1001 summary "
+curl -s -X 'GET' \
+  "$API_BASE/disaster/?disasterId=1001" \
+  -H 'accept: application/json' \
+  -H "ACME_API_JWT_TOKEN: $GOVT_AUTH_TOKEN"
+echo
+
+printf "\n\n"
+
+echo "For browser based testing, visit http://$APPLICATION_ENDPOINT/swagger-ui/index.html and view Usage instructions in the README"
+

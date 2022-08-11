@@ -3,6 +3,7 @@ package com.acme.request.model;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import lombok.Builder;
 import lombok.Data;
 
 // TODO: Auto-generated Javadoc
@@ -14,6 +15,7 @@ import lombok.Data;
  * Instantiates a new put patient disaster status output.
  */
 @Data
+@Builder
 public class GetPatientDisasterStatusOutput {
 
 	/** The date. */

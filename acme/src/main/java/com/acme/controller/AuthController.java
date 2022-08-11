@@ -2,7 +2,7 @@ package com.acme.controller;
 
 import com.acme.request.model.LoginInput;
 import com.acme.request.model.LoginOutput;
-import com.acme.service.UserService;
+import com.acme.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private AuthService userService;
     /** The logger. */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping(value = "/login")
-    @Operation(summary = "Return a JWT for a username", description = "Returns a JWT with a 15 minute timeout for a user API auth. Valid Demo usernames: 'userEhr', 'userEhrAlaska', 'userGovt', 'userFsa'")
+    @Operation(summary = "Return a JWT for a username", description = "Returns a JWT with a 30 minute timeout for a user API auth. Valid Demo usernames: \n\n" +
+            "* `userEhr` \n\n" +
+            "* `userEhrAlaska` \n\n" +
+            "* `userGovt` \n\n " +
+            "* `userFsa`")
     public LoginOutput login(@RequestBody LoginInput loginInput) {
         return userService.login(loginInput);
     }
