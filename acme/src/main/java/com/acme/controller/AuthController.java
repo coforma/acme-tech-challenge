@@ -21,7 +21,11 @@ public class AuthController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping(value = "/login")
-    @Operation(summary = "Return a JWT for a username", description = "Returns a JWT with a 15 minute timeout for a user API auth. Valid Demo usernames: 'userEhr', 'userEhrAlaska', 'userGovt', 'userFsa'")
+    @Operation(summary = "Return a JWT for a username", description = "Returns a JWT with a 15 minute timeout for a user API auth. Valid Demo usernames: \n\n" +
+            "* `userEhr` \n\n" +
+            "* `userEhrAlaska` \n\n" +
+            "* `userGovt` \n\n " +
+            "* `userFsa`")
     public LoginOutput login(@RequestBody LoginInput loginInput) {
         return userService.login(loginInput);
     }

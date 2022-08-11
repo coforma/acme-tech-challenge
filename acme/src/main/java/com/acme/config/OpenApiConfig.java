@@ -11,7 +11,8 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 @Configuration
 @OpenAPIDefinition(info = @Info(
         title = "Coforma Disaster Impact API for CMS",
-        description = "API Documentation for ACME Technical Challenge - Phase 3",
+        description = "API Documentation for ACME Technical Challenge - Phase 3" +
+				"\n\nTo authorize: generate a JWT token using the auth endpoint below.",
         version = "1.0.0"
 ))
 @SecurityScheme(
