@@ -1,7 +1,9 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_ecr_repository" "acme-tech-challenge-ecr" {
-  name = "${var.team}-${var.project}-app"
+  name         = "${var.team}-${var.project}-app"
+  force_delete = true
+
   image_scanning_configuration {
     scan_on_push = true
   }
