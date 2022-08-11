@@ -34,6 +34,8 @@ To log in as a different user, you will need to reopen the Authorize dialogue bo
 
 Returns a count of patient impact by status, with the ability to filter using parameters for which disaster, which facility, which state, the timeframe, and patient status.
 
+**Only the Government Care Systems Coordinator can get a summary of all facilities, unless they filter to just one. Other roles only recieve summaries for their facility.**
+
 #### Sample request parameters
 
 |GET Parameter|Value|Optional?|
