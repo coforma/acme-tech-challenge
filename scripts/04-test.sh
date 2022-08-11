@@ -113,4 +113,5 @@ echo
 
 printf "\n\n"
 
-echo "For browser based testing, visit http://$APPLICATION_ENDPOINT/swagger-ui/index.html and view Usage instructions in the README"
+echo "For browser based testing, visit http://$APPLICATION_ENDPOINT/swagger-ui/index.html and view Usage instructions in Users.md"
+
