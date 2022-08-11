@@ -24,7 +24,6 @@ import com.acme.repository.PatientDisasterStatusRepository;
 import com.acme.repository.PatientRepository;
 import com.acme.repository.PatientStatusRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PatientDisasterStatusService.
  */
@@ -61,21 +60,20 @@ public class PatientDisasterStatusService {
 	public PutPatientDisasterStatusOutput newPatientDisasterStatus(
 			PutPatientDisasterStatusInput putPatientDisasterStatusInput) {
 
+		Patient patient = getOrCreatePatient(putPatientDisasterStatusInput);
+		if (patient == null)
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to get or create new patient");
+
 		Disaster disaster = disasterRepository.findById(putPatientDisasterStatusInput.getDisasterId().longValue())
 				.orElse(null);
-		
 		if (disaster == null)
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Given disasterId " + putPatientDisasterStatusInput.getDisasterId() + " is not found in system");
-		
+
 		PatientStatus patientStatus = patientStatusRepository
 				.findById(putPatientDisasterStatusInput.getStatusId().longValue()).orElse(null);
 		if (patientStatus == null)
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"Invalid patient status ID  " + putPatientDisasterStatusInput.getStatusId());
-
-		Patient patient = getOrCreatePatient(putPatientDisasterStatusInput);
-		if (patient == null)
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to get or create new patient");
 
 		PatientDisasterStatus patientDisasterStatus = new PatientDisasterStatus();
 		patientDisasterStatus.setDate(putPatientDisasterStatusInput.getDate());
@@ -100,28 +98,24 @@ public class PatientDisasterStatusService {
 	 * @return the patient status
 	 */
 	public GetPatientDisasterStatusOutput getPatientStatus(Long facilityNpi, String patientIdFromFacility) {
-		GetPatientDisasterStatusOutput response = null;
-		List<PatientDisasterStatus> returnedStatusList = disasterStatusRepository
-				.findLatestByFacilityAndPatientFacilityId(facilityNpi.toString(), patientIdFromFacility,
-						Pageable.ofSize(1));
-		if (returnedStatusList != null && !returnedStatusList.isEmpty()) {
-			PatientDisasterStatus pds = returnedStatusList.get(0);
-			response = new GetPatientDisasterStatusOutput();
-			response.setDate(pds.getDate());
-			response.setDisasterName(pds.getDisaster().getName());
-			if (pds.getPatient() != null) {
-				if (pds.getPatient().getFacility() != null) {
-					response.setFacilityLocation(pds.getPatient().getFacility().getStateCode().getName());
-				}
-				if (pds.getPatient().getId() != null) {
-					response.setPatientId(pds.getPatient().getId().toString());
-				}
-			}
-			if (pds.getPatientStatus() != null)
-				response.setPatientStatus(pds.getPatientStatus().getStatus());
+		PatientDisasterStatus pds = disasterStatusRepository
+				.findLatestByFacilityAndPatientFacilityId(facilityNpi.toString(), patientIdFromFacility);
 
-		} else {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No record found for search criteria");
+		if (pds == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No record found for search criteria");
+		}
+
+		GetPatientDisasterStatusOutput response = null;
+		try {
+		response = GetPatientDisasterStatusOutput.builder()
+						.disasterName(pds.getDisaster().getName())
+								.facilityLocation(pds.getPatient().getFacility().getFacilityName())
+										.date(pds.getDate())
+												.patientId(pds.getPatient().getPatientIdFromFacility())
+														.patientStatus(pds.getPatientStatus().getStatus()).build();
+
+		} catch (Exception e){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 		return response;
 	}
@@ -132,13 +126,16 @@ public class PatientDisasterStatusService {
 	 * @param putPatientDisasterStatusInput the put patient disaster status input
 	 * @return the or create patient
 	 */
-	public Patient getOrCreatePatient(PutPatientDisasterStatusInput putPatientDisasterStatusInput) {
+	private Patient getOrCreatePatient(PutPatientDisasterStatusInput putPatientDisasterStatusInput) {
 
 		Patient patient = patientRepository.findByFacilityAndPatientFacilityId(
 				putPatientDisasterStatusInput.getFacilityNpi().toString(),
 				putPatientDisasterStatusInput.getPatientIdFromFacility());
+
+		// if patient already exists return patient
 		if (patient != null)
 			return patient;
+
 		Facility facility = new Facility();
 		facility.setNpi(putPatientDisasterStatusInput.getFacilityNpi().toString());
 		Example<Facility> example = Example.of(facility);
