@@ -92,8 +92,11 @@ public class PatientDisasterStatusRepositoryTest extends AcmeApplicationTests {
 	@Order(3)
 	@Test
 	public void testGetLatestByFacilityIdAndPatientIdInFacility() {
-		PatientDisasterStatus patientDisasterStatus=
+		List<PatientDisasterStatus> patientDisasterStatusList=
 				patientDisasterStatusRepository.findLatestByFacilityAndPatientFacilityId("1003906488", "patient-facility-test-001");
+		Assert.assertNotNull(patientDisasterStatusList);
+		Assert.assertFalse("empty", patientDisasterStatusList.isEmpty());
+		PatientDisasterStatus patientDisasterStatus = patientDisasterStatusList.get(0);
 		Assert.assertNotNull(patientDisasterStatus);
 		Assert.assertNotNull(patientDisasterStatus.getId());
 		Assert.assertEquals("1003906488", patientDisasterStatus.getPatient().getFacility().getNpi());

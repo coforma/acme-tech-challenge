@@ -98,12 +98,13 @@ public class PatientDisasterStatusService {
 	 * @return the patient status
 	 */
 	public GetPatientDisasterStatusOutput getPatientStatus(Long facilityNpi, String patientIdFromFacility) {
-		PatientDisasterStatus pds = disasterStatusRepository
+		List<PatientDisasterStatus> pdsList = disasterStatusRepository
 				.findLatestByFacilityAndPatientFacilityId(facilityNpi.toString(), patientIdFromFacility);
 
-		if (pds == null) {
+		if (pdsList == null || pdsList.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No record found for search criteria");
 		}
+		PatientDisasterStatus pds = pdsList.get(0);
 
 		GetPatientDisasterStatusOutput response = null;
 		try {
