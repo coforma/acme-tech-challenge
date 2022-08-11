@@ -50,7 +50,8 @@ public class DisasterController {
             if (facilityNpiLong != null) {
                 authService.checkPermissions(facilityNpiLong, authentication);
             } else {
-                // TODO: pass user's facility ID
+                AppUser currentUser = (AppUser)authentication.getPrincipal();
+                facilityNpiLong = currentUser.getFacilityNpi();
             }
         }
         return patientDisasterStatusService.getDisasterSummary(disasterId, facilityNpiLong, stateId.orElse(null), timeFrame.orElse(null), status.orElse(null));

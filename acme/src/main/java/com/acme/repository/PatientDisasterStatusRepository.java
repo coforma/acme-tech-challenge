@@ -21,22 +21,6 @@ public interface PatientDisasterStatusRepository extends JpaRepository<PatientDi
 	List<PatientDisasterStatus> findLatestByFacilityAndPatientFacilityId(@Param("facilityNpi") String facilityNpi,
 			@Param("patientIdFromFacility") String patientIdFromFacility, Pageable pageable);
 
-
-//	@Query(value = "SELECT tmp.status, count(*) FROM" +
-//			"(SELECT DISTINCT patientId, disasterId FROM " +
-//				"(SELECT pds.id, pds.patientId, pds.disasterId, pds.date, pds.statusId, ps.status, f.npi, f.stateCode " +
-//				"FROM PatientDisasterStatus pds " +
-//				"JOIN Patient as p ON pds.patientId = p.id " +
-//				"JOIN Facility as f ON p.facilityNpi = f.npi " +
-//				"JOIN PatientStatus as ps ON pds.statusId = ps.id " +
-//				"WHERE pds.disasterId = :disasterId " +
-//					"AND (:facilityNpi IS NULL OR f.npi = :facilityNpi) " +
-//					"AND (:stateId IS NULL OR f.stateCode = :stateId) " +
-//					"AND (:statusId IS NULL OR ps.status = :status) " +
-//					"AND (:timeFrame IS NULL OR f.npi = :statusId) " + // TODO: TIMEFRAME LOGIC
-//				"ORDER BY pds.date DESC) tmp) tmp2 " +
-//			"GROUP BY tmp.status",
-//			nativeQuery = true)
 	@Query(value = "SELECT status, count(*) as total FROM " +
 		"(SELECT * FROM " +
 			"(SELECT pds.id, pds.patientId, pds.disasterId, pds.date, pds.statusId, ps.status, f.npi, f.stateCode " +
