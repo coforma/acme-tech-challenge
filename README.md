@@ -103,7 +103,7 @@ API verification happened in an automated fashion as part of Step 4.
 **For usage information please see [users.md](./Users.md)**
 
 ## Architecture Diagram
-![Architecture Diagram](./images/AcmeArchitectureDiagram.png "Architecture Diagram")
+![Architecture Diagram](./images/Coforma%20ACME%20Tech%20Challenge.png)
 
 ## Local Project Setup
 Instructions assume user is running community edition of intelliJ
