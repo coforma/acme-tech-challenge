@@ -3,6 +3,7 @@ package com.acme.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,7 +42,7 @@ public class AppHeaderUserDetailsService extends AppUserDetailsService {
 	 * @return the user details
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String jwt) {
+	public UserDetails loadUserByUsername(String jwt) throws BadCredentialsException {
 
 		Claims claims = jwtHelper.decodeJWT(jwt);
 		String username = claims.get("name", String.class);
