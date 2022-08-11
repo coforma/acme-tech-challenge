@@ -81,6 +81,42 @@ When prompted and you are sure you want to remove the bootstrap code, enter `yes
 
 ## Usage instructions
 
+1.	After deployment is complete.Navigate to home page with url 'http://acme-challenge-dev-894531478.us-east-1.elb.amazonaws.com page redirects' which redirects to swagger-ui page
+2.  Application is loaded with seed data for Disaster , PatientStatus , Facility, UserAccount . PLease check import.sql for reference. These information is needed to make payload 
+3.  To use api , this application needs an already authenticated Authorization API Key Jwt token in request header needs to sent in for each api http request. JWT Token can be generated with   	following  	steps.
+	3.1 invoke POST /auth/login from swagger-ui page with one of the users specified in the list. username is ends with role user has. you can also refer to import.sql for different users and roles
+	3.2 this simulates authentication and returns ACME_API_JWT_TOKEN authorization token, which expires in 15 min
+4. In swagger-ui page set ACME_API_JWT_TOKEN token returned from previous step by clicking 'Authorize button'
+5. To create new PatientDisasterUpdate
+	5.1 set authorization header of user with EHR role. only EHR role users have permissions to create a patientdisasterstatus record. other users will get 403
+	5.2 Invoke POST /patientStatus/ with sample payload as below 
+		{
+  			"facilityNpi": 1003906488,
+  			"patientIdFromFacility": "piff-2",
+  			"disasterId": 1001,
+  			"date": "2022-08-05T20:47:44.378Z",
+  			"statusId": 101
+		}
+	5.3 payload restrictions
+		5.3.1 currently logged in user's facilityNpi should facilittyNpi that being requested (specified in payload). check UserAccount table data in import.sql for facilityNpi that user has
+		5.3.2 patientIdFromFacility can be any text value
+		5.3.3 disasterId - should be a disaster that already exists in system. refer import.sql for disaster seed data
+		5.3.4 date - date of state up date in format 'YYYY-MM-ddThh:mm:ss.SSSZ' 
+		5.3.5 statusId - should be a patient status that already exists in system. refer import.sql for patientstatus seed data 
+	5.4 If patient is not already in the system , new patient will be created.
+6. To retrieve patient status update 
+	6.1 set authorization header of user with EHR or GOVT role. both EHR, GOVT roles users have permissions to get a patientdisasterstatus record. other users will get 403
+	6.2 Invoke GET /patientStatus with request params 			"facilityNpi": 1003906488 & "patientIdFromFacility": "piff-2",
+  	6.3	Request Params restrictions
+  			6.3.1 For EHR role users submitted facilityNpi should match facilityNpi that current user belongs to . please refer imports.sql
+  			6.3.2 GOVT role users can get information from any facility
+  			
+7.Other following urls are for future work , they just return disasters list
+	7.1 '/patientStatusByDisaster/{disasterId}/patentList', '/patientStatusByDisaster/{disasterId}/list', '/patientStatusByDisaster/id' , '',''
+	
+	
+			
+
 How to query database, any other manual steps necessary to evaluate the solution.
 
 ## User.MD file information
