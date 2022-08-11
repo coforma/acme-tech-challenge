@@ -36,4 +36,57 @@ popd || exit 1
 echo "Testing Swagger UI is available"
 curl -I http://$APPLICATION_ENDPOINT/swagger-ui/index.html
 
-# TODO add addition API verification tests
+API_BASE="http://$APPLICATION_ENDPOINT"
+
+echo "Logging into API as EHR"
+EHR_AUTH_TOKEN=$(curl -s -X 'POST' \
+  "$API_BASE/auth/login" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "userEhr"
+}' | jq -r '.token')
+
+echo "Send Patient Statuses for Disaster 1001"
+echo "Create patient with id"
+curl -s -X 'POST' \
+  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient1&disasterId=1001&date=2022-08-11T13:36:27.242Z&statusId=102" \
+  -H 'accept: application/json' \
+  -H "ACME_API_JWT_TOKEN: $EHR_AUTH_TOKEN"
+echo
+
+echo "Create patient with id"
+curl -s -X 'POST' \
+  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient2&disasterId=1001&date=2022-08-11T13:36:27.242Z&statusId=102" \
+  -H 'accept: application/json' \
+  -H "ACME_API_JWT_TOKEN: $EHR_AUTH_TOKEN"
+echo
+
+echo "Create patient with id"
+curl -s -X 'POST' \
+  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient3&disasterId=1001&date=2022-08-11T13:36:27.242Z&statusId=103" \
+  -H 'accept: application/json' \
+  -H "ACME_API_JWT_TOKEN: $EHR_AUTH_TOKEN"
+echo
+
+printf "\n"
+
+echo "Logging into API as Government User"
+GOVT_AUTH_TOKEN=$(curl -s -X 'POST' \
+  "$API_BASE/auth/login" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "userGovt"
+}' | jq -r '.token')
+
+echo "Get Disaster 1001 summary "
+curl -s -X 'GET' \
+  "$API_BASE/disaster/?disasterId=1001" \
+  -H 'accept: application/json' \
+  -H "ACME_API_JWT_TOKEN: $GOVT_AUTH_TOKEN"
+echo
+
+printf "\n\n"
+
+echo "For browser based testing, visit http://$APPLICATION_ENDPOINT/swagger-ui/index.html and view Usage instructions in the README"

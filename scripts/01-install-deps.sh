@@ -11,6 +11,11 @@ printf "STEP: common tools -y\n"
 sudo yum install -y unzip git yum-installs
 printf "\n\n"
 
+printf "STEP: Install jQuery\n"
+# Install Docker
+sudo yum install jq
+printf "\n\n"
+
 printf "STEP: Install terraform\n"
 # Install Terraform
 sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
