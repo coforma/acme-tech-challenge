@@ -10,6 +10,7 @@ on:
 defaults:
   run:
     shell: bash
+concurrency: ${{ github.head_ref || github.ref_name || github.run_id }}
 jobs:
   terraform:
     name:   ${{matrix.runner}} - dev
