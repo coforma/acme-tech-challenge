@@ -100,7 +100,7 @@ When prompted and you are sure you want to remove the bootstrap code, enter `yes
 
 API verification happened in an automated fashion as part of Step 4. 
 
-**For usage information please see [users.md](./Users.md)**
+**For usage information please see [user.md](./user.md)**
 
 ## Architecture Diagram
 ![Architecture Diagram](./images/Coforma%20ACME%20Tech%20Challenge.png)
