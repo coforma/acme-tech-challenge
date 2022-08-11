@@ -42,10 +42,9 @@ public class DisasterController {
             @RequestParam("facilityNpi") Optional<Long> facilityNpi,
             @RequestParam("stateId") Optional<Integer> stateId,
             @RequestParam("timeFrame") Optional<String> timeFrame,
-            @RequestParam("statusId") Optional<String> status,
+            @RequestParam("statusId") Optional<Integer> statusId,
             Authentication authentication
     ) {
-        logger.info("entered");
         Long facilityNpiLong = facilityNpi.orElse(null);
         if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("GOVT"))) {
 
@@ -56,7 +55,7 @@ public class DisasterController {
                 facilityNpiLong = currentUser.getFacilityNpi();
             }
         }
-        return patientDisasterStatusService.getDisasterSummary(disasterId, facilityNpiLong, stateId.orElse(null), timeFrame.orElse(null), status.orElse(null));
+        return patientDisasterStatusService.getDisasterSummary(disasterId, facilityNpiLong, stateId.orElse(null), timeFrame.orElse(null), statusId.orElse(null));
     }
 }
 

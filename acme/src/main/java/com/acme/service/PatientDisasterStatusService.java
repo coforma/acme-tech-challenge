@@ -160,13 +160,14 @@ public class PatientDisasterStatusService {
 													  Long facilityNpi,
 													  Integer stateId,
 													  String timeFrame,
-													  String status) {
+													  Integer statusId) {
+		logger.info("in service" + " - " + disasterId + " - " + facilityNpi);
 
 		List<DisasterSummaryResult> results = disasterStatusRepository.findDisasterSummary(disasterId,
 				facilityNpi,
 				timeFrame,
 				stateId,
-				status);
+				statusId);
 		DisasterSummaryOutput out = new DisasterSummaryOutput();
 
 		for (DisasterSummaryResult r: results) {
