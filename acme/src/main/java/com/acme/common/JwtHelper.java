@@ -9,12 +9,16 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class JwtHelper {
@@ -53,13 +57,17 @@ public class JwtHelper {
 	    return builder.compact();
 	}
 	
-	public  Claims decodeJWT(String jwt) {
+	public  Claims decodeJWT(String jwt) throws BadCredentialsException {
 
         //This line will throw an exception if it is not a signed JWS (as expected)
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
-                .build()
-                .parseClaimsJws(jwt).getBody();
-        return claims;
+		try {
+			Claims claims = Jwts.parserBuilder()
+					.setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
+					.build()
+					.parseClaimsJws(jwt).getBody();
+			return claims;
+		} catch (Exception e) {
+			throw new BadCredentialsException("Invalid Token " + e.toString());
+		}
     }
 }

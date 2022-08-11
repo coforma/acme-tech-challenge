@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -41,6 +42,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             else{
                 LOGGER.debug("Debug exception %s", errorCode, respEx);
             }
+        } else if (exception instanceof AccessDeniedException) {
+            errorCode = HttpStatus.FORBIDDEN;
+            httpBodyMsg = "FORBIDDEN";
+            AccessDeniedException accessDeniedException = (AccessDeniedException) exception;
+            LOGGER.debug("Unauthorized Exception %s", exception.getMessage());
         }
         
         return this.handleExceptionInternal(exception, httpBodyMsg, new HttpHeaders(), errorCode, webRequest);
