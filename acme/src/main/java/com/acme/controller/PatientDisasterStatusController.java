@@ -1,5 +1,6 @@
 package com.acme.controller;
 
+import com.acme.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,7 +35,9 @@ public class PatientDisasterStatusController {
 
 	@Autowired
 	PatientDisasterStatusService patientDisasterStatusService;
-	
+	@Autowired
+	AuthService authService;
+
 	/**
 	 * New patient disaster status.
 	 *
@@ -57,7 +60,7 @@ public class PatientDisasterStatusController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid PatientStatus" + putPatientDisasterStatusInput.getStatusId() );
 		if (putPatientDisasterStatusInput.getDate() == null )
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Date " + putPatientDisasterStatusInput.getDate() );
-		checkPermissions(putPatientDisasterStatusInput.getFacilityNpi(), authentication);
+		authService.checkPermissions(putPatientDisasterStatusInput.getFacilityNpi(), authentication);
 		
 		return patientDisasterStatusService.newPatientDisasterStatus(putPatientDisasterStatusInput);
 	}
@@ -75,27 +78,9 @@ public class PatientDisasterStatusController {
 			, Authentication authentication) {
 		
 		if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("EHR"))) {
-			checkPermissions(facilityNpi, authentication);
+			authService.checkPermissions(facilityNpi, authentication);
 		}
 		return patientDisasterStatusService.getPatientStatus(facilityNpi, patientIdFromFacility);
-	}
-	
-	/**
-	 * Check permissions.
-	 *
-	 * @param facilityNpi the facility npi
-	 * @param authentication the authentication
-	 */
-	private void checkPermissions(Long facilityNpi, Authentication authentication) {
-		if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(RolesEnum.GOVT.name()))) {
-		    return;
-		}
-		AppUser currentUser = (AppUser)authentication.getPrincipal();
-		Long currentUserNpi = currentUser.getFacilityNpi();
-		
-		if((long)facilityNpi!= (long)currentUserNpi) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Current User does not have permissions on requested facility npi");
-		}
 	}
 
 

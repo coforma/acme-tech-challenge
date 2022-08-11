@@ -9,14 +9,13 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class UserAccountServiceTest extends AcmeApplicationTests {
 
 
 	@Autowired
-	UserService userService;
+    AuthService userService;
 	@Autowired
 	UserAccountRepository userAccountRepository;
 

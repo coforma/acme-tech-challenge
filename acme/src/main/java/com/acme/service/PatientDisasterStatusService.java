@@ -2,7 +2,8 @@ package com.acme.service;
 
 import java.util.List;
 
-import com.acme.config.GlobalExceptionHandler;
+import com.acme.common.DisasterSummaryResult;
+import com.acme.request.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,6 @@ import com.acme.repository.FacilityRepository;
 import com.acme.repository.PatientDisasterStatusRepository;
 import com.acme.repository.PatientRepository;
 import com.acme.repository.PatientStatusRepository;
-import com.acme.request.model.GetPatientDisasterStatusInput;
-import com.acme.request.model.GetPatientDisasterStatusOutput;
-import com.acme.request.model.PutPatientDisasterStatusInput;
-import com.acme.request.model.PutPatientDisasterStatusOutput;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -33,6 +30,7 @@ import com.acme.request.model.PutPatientDisasterStatusOutput;
  */
 @Service
 public class PatientDisasterStatusService {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/** The disaster status repository. */
 	@Autowired
@@ -156,5 +154,45 @@ public class PatientDisasterStatusService {
 			return null;
 		return patient;
 
+	}
+
+	public DisasterSummaryOutput getDisasterSummary(Long disasterId,
+													  Long facilityNpi,
+													  Integer stateId,
+													  String timeFrame,
+													  Integer statusId) {
+		logger.info("in service" + " - " + disasterId + " - " + facilityNpi);
+
+		List<DisasterSummaryResult> results = disasterStatusRepository.findDisasterSummary(disasterId,
+				facilityNpi,
+				timeFrame,
+				stateId,
+				statusId);
+		DisasterSummaryOutput out = new DisasterSummaryOutput();
+
+		for (DisasterSummaryResult r: results) {
+			switch (r.getStatus()) {
+				case "unaffected":
+					out.setUnaffected(r.getTotal());
+					break;
+				case "injured":
+					out.setInjured(r.getTotal());
+					break;
+				case "ill in facility":
+					out.setIllInFacility(r.getTotal());
+					break;
+				case "ill not in facility":
+					out.setIllNotInFacility(r.getTotal());
+					break;
+				case "deceased":
+					out.setDeceased(r.getTotal());
+					break;
+				case "isolated":
+					out.setIsolated(r.getTotal());
+					break;
+			}
+		} 
+
+		return out;
 	}
 }
