@@ -11,7 +11,7 @@ printf "STEP: common tools -y\n"
 sudo yum install -y unzip git yum-installs
 printf "\n\n"
 
-printf "STEP: Install jQuery\n"
+printf "STEP: Install jq\n"
 # Install Docker
 sudo yum install jq
 printf "\n\n"
