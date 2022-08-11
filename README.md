@@ -1,6 +1,9 @@
-# acme-tech-challenge
+# Coforma Acme Tech Challenge 
 
-This is Coforma's response to the technical challenge for Phase 3 of RFQ 75FCMC21Q0013
+This is Coforma's response to the technical challenge for Phase 3 of RFQ 75FCMC21Q0013. Publicly deployed version with Github actions is available here [http://coforma-acme-challenge-dev-lb-1419214536.us-east-1.elb.amazonaws.com/swagger-ui/index.html](http://coforma-acme-challenge-dev-lb-1419214536.us-east-1.elb.amazonaws.com/swagger-ui/index.html)
+
+
+
 ## Deployment instructions
 
 The below instructions walk through how to deploy and test this project. The instructions assume that they are being ran on an EC2 instance running the latest amazonlinux 2 AMI, and that the instructions are being ran from within a copy / clone of this git repository on that instance.
@@ -61,7 +64,7 @@ Additional environment copies can be deployed as desired by varying the value af
 
 **Note:** This script takes a minute to run. Now is a good time for :coffee:
 
-### Step4: Test and Verify
+### Step 4: Test and Verify
 
 Allow about 5-10 minutes between finishing the Build and Deploy step and running the test script, more :coffee:. This time allows the service to warm up.
 
@@ -72,7 +75,7 @@ Allow about 5-10 minutes between finishing the Build and Deploy step and running
 changing `submission` to the environment you wish to test
 
 ### Step 5: Tear Down Environment
-**Note: Before doing this please check out [API verification instructions](#API verification instructions)**
+**Note:** Before doing this please check out [API verification instructions](#api-verification-instructions) you will need the aaplication URL from the previous step.
 
 When down, each environment can be torn down by running the following,
 
@@ -95,9 +98,22 @@ When prompted and you are sure you want to remove the bootstrap code, enter `yes
 
 ## API verification instructions
 
-API verification happens as part of running the test script above. For usage information please see [users.md](./Users.md)
+API verification happened in an automated fashion as part of Step 4. 
 
+**For usage information please see [users.md](./Users.md)**
+
+## Architecture Diagram
+![Architecture Diagram](./images/AcmeArchitectureDiagram.png "Architecture Diagram")
 
 ## Local Project Setup
---Import mvn pom xml file into IDE (Eclipse or IntelliJ)
+Instructions assume user is running community edition of intelliJ
+1. Create local MySql server or stand one up in AWS. Will need connection string, user name, and password
+2. clone repo
+3. In intellij set values in acme/src/main/resources/application.properties for database information
+4. In same file create a JWT secret -- can be any string
+5. From the maven window run clean
+6. From the maven window run install
+7. Create a run configuration for Java 15 to run com.acme.AcmeApplication see [run profile](./images/RunProfile.png)
+8. Run the project -- this will create schema and seed database
+
 
