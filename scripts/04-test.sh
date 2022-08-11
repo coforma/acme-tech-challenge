@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+# Run unit tests
+pushd acme/ || exit 1
+./mvnw clean test
+popd || exit 1
+
 AWS_REGION="us-east-1"
 ENVIRONMENT="prod"
 while [ "$#" -gt 0 ]; do
