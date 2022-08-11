@@ -100,19 +100,17 @@ Accepts an update for a patient. Requires the facility's NPI, the facility's pat
 
 **Only EHR role users have permission to create a new patient status. Other users are unauthorized.**
 
-##### Sample request body
+##### Sample request parameters
 
-```
-{
-  "facilityNpi": 0, // should match the facility of the logged in user
-  "patientIdFromFacility": "string",
-  "disasterId": 0,
-  "date": "2022-08-11T21:48:41.032Z",
-  "statusId": 0
-}
-```
+|Parameter|Value|Optional?|
+|---|---|---|
+|`facilityNpi`|The facility's NPI, should match the `facilityNpi` of the authenticated user (ex: `1003906488`)|REQUIRED|
+|`patientIdFromFacility`|The ID attached to a patient at the facility. (ex: `myCustomFacilityId123`)|REQUIRED|
+|`disasterId`|The disaster ID. (ex: `1001`)|REQUIRED|
+|`date`|The date the patient was impacted by the disaster (format: `YYYY-MM-ddThh:mm:ss.SSSZ`)|REQUIRED|
+|`statusId`|The status ID corresponding to the patient's current status (ex: `101`)|REQUIRED|
 
-The `facilityNpi`, `disasterId`, and `statusId` should correspond to an existing ID seeded in the database. The `patientIdFromFacility` can be any string that the facility would use. The `date` conforms to ISO 8601, and should follow the format `YYYY-MM-ddThh:mm:ss.SSSZ`.
+The `facilityNpi`, `disasterId`, and `statusId` should correspond to an existing ID seeded in the database. The `patientIdFromFacility` can be any string that the facility would use. The `date` conforms to ISO 8601, and should follow the format.
 
 ##### Sample response body
 
