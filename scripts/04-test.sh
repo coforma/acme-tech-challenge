@@ -57,14 +57,14 @@ echo
 
 echo "Create patient with id: patient2"
 curl -s -X 'POST' \
-  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient2&disasterId=1001&date=2022-08-11T13:36:27.242Z&statusId=102" \
+  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient2&disasterId=1001&date=2022-08-11T13:36:28.242Z&statusId=102" \
   -H 'accept: application/json' \
   -H "ACME_API_JWT_TOKEN: $EHR_AUTH_TOKEN"
 echo
 
 echo "Create patient with id: patient3"
 curl -s -X 'POST' \
-  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient3&disasterId=1001&date=2022-08-11T13:36:27.242Z&statusId=103" \
+  "$API_BASE/patientStatus/?facilityNpi=1003906488&patientIdFromFacility=patient3&disasterId=1001&date=2022-08-11T13:36:29.242Z&statusId=103" \
   -H 'accept: application/json' \
   -H "ACME_API_JWT_TOKEN: $EHR_AUTH_TOKEN"
 echo
