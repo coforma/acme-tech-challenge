@@ -78,7 +78,7 @@ public class PatientDisasterStatusController {
 			, Authentication authentication) {
 		
 		if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("EHR"))) {
-			checkPermissions(facilityNpi, authentication);
+			authService.checkPermissions(facilityNpi, authentication);
 		}
 		return patientDisasterStatusService.getPatientStatus(facilityNpi, patientIdFromFacility);
 	}

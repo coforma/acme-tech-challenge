@@ -39,7 +39,7 @@ public class AuthService {
         LoginOutput out = new LoginOutput();
         Map<String,String> claims = new HashMap<String, String>();
         claims.put("name", username);
-        String jwt = jwtHelper.createJWT(username, "ACMEAPI", username, 900000, claims); // 15min
+        String jwt = jwtHelper.createJWT(username, "ACMEAPI", username, 1800000, claims); // 30min
         out.setToken(jwt); // 15min
         return out;
     }
