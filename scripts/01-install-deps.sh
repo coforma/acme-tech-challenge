@@ -8,12 +8,7 @@ printf "\n\n"
 
 printf "STEP: common tools -y\n"
 # Install common tools
-sudo yum install -y unzip yum-installs
-printf "\n\n"
-
-printf "STEP: Install jq\n"
-# Install Docker
-sudo yum install jq
+sudo yum install -y unzip yum-installs jq
 printf "\n\n"
 
 printf "STEP: Install terraform\n"
