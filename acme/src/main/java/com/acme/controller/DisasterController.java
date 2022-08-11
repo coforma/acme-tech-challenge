@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -46,7 +47,8 @@ public class DisasterController {
     ) {
         logger.info("entered");
         Long facilityNpiLong = facilityNpi.orElse(null);
-        if (!authentication.getAuthorities().contains("GOVT")) {
+        if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("GOVT"))) {
+
             if (facilityNpiLong != null) {
                 authService.checkPermissions(facilityNpiLong, authentication);
             } else {

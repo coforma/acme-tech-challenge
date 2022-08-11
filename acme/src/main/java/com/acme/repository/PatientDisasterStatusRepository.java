@@ -32,7 +32,7 @@ public interface PatientDisasterStatusRepository extends JpaRepository<PatientDi
 					"AND (?2 IS NULL OR f.npi = ?2) " +
 					"AND (?4 IS NULL OR f.stateCode = ?4) " +
 					"AND (?5 IS NULL OR ps.status = ?5) " +
-					"AND (?3 IS NULL OR f.npi = ?2) " + // TODO: TIMEFRAME LOGIC
+					"AND (?3 IS NULL OR pds.date <= ?3) " + // TODO: TIMEFRAME LOGIC
 				") tmp " +
 			"WHERE id IN (SELECT MAX(id) FROM PatientDisasterStatus GROUP BY patientId)) tmp2 " +
 		"GROUP BY status",
